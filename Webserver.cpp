@@ -71,9 +71,10 @@ void send_file_name(TinyWebServer& web_server, const char* filename) {
   }
 }
 
+
+
 boolean index_handler(TinyWebServer& web_server) {
 	send_file_name(web_server, "index.htm");
-
 	return true;
 }
 
@@ -94,41 +95,43 @@ boolean now_handler(TinyWebServer& web_server)
     return true;
 }
 
-/*void printDirectory(File dir, int numTabs) {
-	while(true) {
-		
-		File entry =  dir.openNextFile();
-		if (! entry) {
-			// no more files
-			//Serial.println("**nomorefiles**");
-			break;
-		}
-		for (uint8_t i=0; i<numTabs; i++) {
-			Serial.print('\t');
-		}
-		Serial.print(entry.name());
-		if (entry.isDirectory()) {
-			Serial.println("/");
-			printDirectory(entry, numTabs+1);
-		} else {
-			// files have sizes, directories do not
-			Serial.print("\t\t");
-			Serial.println(entry.size(), DEC);
-		}
-		entry.close();
-	}
-}*/
+void print_list(TinyWebServer& web_server)
+{
+  dir_t* p;
+
+  root.rewind();
+  while (p = root.readDirCache())
+  {
+	  // done if past last used entry
+	  if (p->name[0] == DIR_NAME_FREE) break;
+
+	  // skip deleted entry and entries for . and  ..
+	  if (p->name[0] == DIR_NAME_DELETED || p->name[0] == '.') continue;
+
+	  // only list subdirectories and files
+	  if (!DIR_IS_FILE(p)) continue;
+
+	  // print file name with possible blank fill
+	  for (uint8_t i = 0; i < 11; i++) 
+	  {
+		  if (p->name[i] == ' ') continue;
+		  if (i == 8) 
+		  {
+			  web_server.print('.');
+		  }
+		  web_server.write(p->name[i]);
+	  }
+	  web_server.println();
+   }
+}
 
 boolean list_handler(TinyWebServer& web_server)
 {
 	web_server.send_error_code(200);
 	web_server.send_content_type("text/plain");
 	web_server.end_headers();
-	
-	//printDirectory(new File('/'),2);
-	//root.ls();
-	
-	
+	print_list(web_server);
+	return true;
 }
 
 /************************************************************************/

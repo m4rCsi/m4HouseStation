@@ -2,7 +2,6 @@
 /*                                                                      */
 /************************************************************************/
 #include	"Arduino.h"
-#include	"SD.h"
 #include	"Ethernet.h"
 #include	<Wire.h>
 #include	"RTClib.h"
@@ -19,22 +18,6 @@ boolean		webserver_state = false;
 
 RTC_DS1307 RTC;
 
-/*void printDate()
-{
-	DateTime now = RTC.now();
-	Serial.print(now.year(), DEC);
-	Serial.print('/');
-	Serial.print(now.month(), DEC);
-	Serial.print('/');
-	Serial.print(now.day(), DEC);
-	Serial.print(' ');
-	Serial.print(now.hour(), DEC);
-	Serial.print(':');
-	Serial.print(now.minute(), DEC);
-	Serial.print(':');
-	Serial.println(now.second(), DEC);
-}*/
-
 void setup()
 {
 	// Serial
@@ -43,13 +26,11 @@ void setup()
 	// RTC
 	Wire.begin(); 
 	RTC.begin();
-	
 	//RTC.adjust(DateTime(__DATE__, __TIME__));
 	
 	logging_init();
 	
-	Serial.println("Start");
-	
+	Serial.println("Start");	
 	webserver_state = webserver_init();
 	if (!webserver_state)
 	{

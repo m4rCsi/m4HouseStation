@@ -241,10 +241,6 @@
       <SubType>compile</SubType>
       <Link>libraries\w5100.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\SD\File.cpp">
-      <SubType>compile</SubType>
-      <Link>libraries\File.cpp</Link>
-    </Compile>
     <Compile Include="C:\Programs\arduino-1.0.3\libraries\SD\utility\Sd2Card.cpp">
       <SubType>compile</SubType>
       <Link>libraries\Sd2Card.cpp</Link>
