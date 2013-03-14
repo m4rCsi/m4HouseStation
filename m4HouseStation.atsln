@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "m4HouseStation", "m4HouseStation.cppproj", "{8FBD491B-EFB0-4B1A-9CBE-90C6948CE532}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "m4SDTest", "..\m4SDTest\m4SDTest.cppproj", "{A7AEEE18-89DC-46AE-9C28-9A7A59E26E0B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8FBD491B-EFB0-4B1A-9CBE-90C6948CE532}.Debug|AVR.ActiveCfg = Debug|AVR
+		{8FBD491B-EFB0-4B1A-9CBE-90C6948CE532}.Debug|AVR.Build.0 = Debug|AVR
+		{8FBD491B-EFB0-4B1A-9CBE-90C6948CE532}.Release|AVR.ActiveCfg = Release|AVR
+		{8FBD491B-EFB0-4B1A-9CBE-90C6948CE532}.Release|AVR.Build.0 = Release|AVR
+		{A7AEEE18-89DC-46AE-9C28-9A7A59E26E0B}.Debug|AVR.ActiveCfg = Debug|AVR
+		{A7AEEE18-89DC-46AE-9C28-9A7A59E26E0B}.Debug|AVR.Build.0 = Debug|AVR
+		{A7AEEE18-89DC-46AE-9C28-9A7A59E26E0B}.Release|AVR.ActiveCfg = Release|AVR
+		{A7AEEE18-89DC-46AE-9C28-9A7A59E26E0B}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

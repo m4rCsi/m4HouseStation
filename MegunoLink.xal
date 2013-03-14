@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<arduino-link-project>
+  <source-path>D:\Workspace\atmelstudio\m4HouseStation\Debug\m4HouseStation.hex</source-path>
+  <relative-path>N</relative-path>
+  <port>COM4</port>
+  <device-id>Arduino Uno</device-id>
+  <baud-rate>115200</baud-rate>
+  <log-file-path />
+  <append-cr>N</append-cr>
+  <append-lf>N</append-lf>
+  <transmit-strings />
+  <serial-monkey />
+</arduino-link-project>
