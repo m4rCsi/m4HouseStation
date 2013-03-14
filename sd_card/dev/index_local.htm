@@ -3,8 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title>45 Westway Logger</title>
-    <link href="l.css" rel="stylesheet" type="text/css">
-    <script src="script.js"></script>
+    <link href="layout.css" rel="stylesheet" type="text/css">
+    <link href="jqueryUI.css" rel="stylesheet" type="text/css">
+    <script src="jquery.js"></script>
+    <script src="jqueryUI.js"></script>
+    <script src="hcharts.js"></script>
+    <script src="m4HS.js"></script>
 </head>
 <body>
 <div id="now_section" class="section">
@@ -19,11 +23,11 @@
     <div id="now_status"></div>
     <div id="now_content" class="content">
         <p>Gas Meter = <span id="gas_meter"></span><br>
-            Gas consumption = <span id="gas_power"></span> <br>
-            Ele Meter = <span id="ele_meter"></span><br>
-            Ele consumption = <span id="ele_power"></span><br>
-            Temperature = <span id="temp"></span><br>
-            Humidity = <span id="hum"></span></p>
+        Gas consumption = <span id="gas_power"></span> <br>
+        Ele Meter = <span id="ele_meter"></span><br>
+        Ele consumption = <span id="ele_power"></span><br>
+        Temperature = <span id="temp"></span><br>
+        Humidity = <span id="hum"></span></p>
     </div>
 </div>
 <div id="pow_section" class="section">
@@ -41,29 +45,29 @@
     <div id="pow_content" class="content">
         <table id="pow_stats">
             <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Impulses</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col">Estimated Price</th>
-            </tr>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Impulses</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Estimated Cost</th>
+                </tr>
             </thead>
             <tbody>
-            <tr class="ele">
-                <td>Electricity</td>
-                <td id="ps_ele_imp"></td>
-                <td></td>
-                <td id="ps_ele_kwh"></td>
-                <td id="ps_ele_price"></td>
-            </tr>
-            <tr class="gas">
-                <td>Gas</td>
-                <td id="ps_gas_imp"></td>
-                <td id="ps_gas_m3"></td>
-                <td id="ps_gas_kwh"></td>
-                <td id="ps_gas_price"></td>
-            </tr>
+                <tr class="ele">
+                    <td>Electricity</td>
+                    <td id="ps_ele_imp"></td>
+                    <td></td>
+                    <td id="ps_ele_kwh"></td>
+                    <td id="ps_ele_price"></td>
+                </tr>
+                <tr class="gas">
+                    <td>Gas</td>
+                    <td id="ps_gas_imp"></td>
+                    <td id="ps_gas_m3"></td>
+                    <td id="ps_gas_kwh"></td>
+                    <td id="ps_gas_price"></td>
+                </tr>
             </tbody>
         </table>
         <div id="pow_diagram"></div>
