@@ -100,6 +100,7 @@ ISR (INT1_vect)
 		{
 			ele_meter++;
 			ele_counter = 0;
+			
 		}
 	}
 }
