@@ -790,6 +790,39 @@ function display_now(stringData, renderTo)
     setNowStatus("",1);
 }
 
+var validEDays = [];
+var validPDays = [];
+
+function extractDates(filename)
+{
+    var firstchar = filename.charAt(0);
+
+    if ((firstchar == 'E' ||
+        firstchar == 'M')  &&
+        filename.length == 11 &&
+        filename.substring(7,11) == ".TXT")
+    {
+        if (firstchar == 'E')
+            validEDays.push(Number(filename.substring(1,7)));
+
+        if (firstchar == 'M')
+            validPDays.push(Number(filename.substring(1,7)));
+    }
+}
+
+function applyList(data)
+{
+    var files = CSVToArray(data);
+
+    for (var i = 0, ii = files.length; i < ii; i++)
+    {
+        extractDates(files[i][0]);
+    }
+
+    validEDays.sort();
+    validPDays.sort();
+}
+
 function getNow(filename)
 {
     $.ajax({
@@ -846,6 +879,46 @@ function getPowOverview(filename)
     });
 }
 
+function checkEDay(date)
+{
+    var dnum = Number(getDateString(date));
+    for (var i = validEDays.length-1; i >= 0; i--)
+    {
+        if (validEDays[i] < dnum)
+            return {0: false}
+        if (validEDays[i] == dnum)
+            return {0: true}
+    }
+    return {0: false}
+}
+
+function checkPDay(date)
+{
+    var dnum = Number(getDateString(date));
+    for (var i = validEDays.length-1; i >= 0; i--)
+    {
+        if (validPDays[i] < dnum)
+            return {0: false}
+        if (validPDays[i] == dnum)
+            return {0: true}
+    }
+    return {0: false}
+}
+
+function getList(filename)
+{
+    $.ajax({
+        type: "GET",
+        url: filename,
+        error: function() {
+
+        },
+        success: function(data) {
+            applyList(data);
+        }
+    });
+}
+
 function setStatus(status,show,statusID,contentID)
 {
     document.getElementById(statusID).innerHTML=status;
@@ -878,6 +951,11 @@ function setEnvStatus(status,show)
 env_date = null;
 pow_date = null;
 
+function getDateString(date)
+{
+    return (date.getFullYear()+'').substring(2,4) + n(date.getMonth()+1)+ n(date.getDate());
+}
+
 function initDocument()
 {
     $('#now_showhide').click(function(){
@@ -903,7 +981,7 @@ function initDocument()
         {
             pow_date = new Date();
         }
-        var fn = "M"+(pow_date.getFullYear()+'').substring(2,4) + n(pow_date.getMonth()+1)+ n(pow_date.getDate());
+        var fn = "M"+getDateString(pow_date);
         getPow(fn + ".txt");
         setPowStatus("loading..." + fn + ".txt");
     });
@@ -919,7 +997,7 @@ function initDocument()
         {
             env_date = new Date();
         }
-        var fn = "E"+(env_date.getFullYear()+'').substring(2,4) + n(env_date.getMonth()+1)+ n(env_date.getDate());
+        var fn = "E"+getDateString(env_date);
         getEnv(fn + ".txt");
         setEnvStatus("loading..." + fn + ".txt");
     });
@@ -927,14 +1005,16 @@ function initDocument()
     $(function() {
         $( "#env_datepicker" ).datepicker({
             dateFormat: "dd/mm/yy",
-            maxDate: 0
+            maxDate: 0,
+            beforeShowDay: checkEDay
         });
     });
 
     $(function() {
         $( "#pow_datepicker" ).datepicker({
             dateFormat: "dd/mm/yy",
-            maxDate: 0
+            maxDate: 0,
+            beforeShowDay: checkPDay
         });
     });
 }
@@ -942,4 +1022,6 @@ function initDocument()
 $(document).ready(function()
 {
     initDocument();
+
+    getList("list.txt");
 });
