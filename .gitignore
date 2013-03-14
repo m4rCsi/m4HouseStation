@@ -44,3 +44,6 @@
 *.srec
 *.mk
 *.S
+
+Makefile
+
