@@ -1,0 +1,89 @@
+body {
+    text-align: center
+}
+
+.section {
+    padding: 10px;
+
+    text-align: left;
+    margin: 10px;
+
+    border-color: black;
+    border-style: solid;
+    border-width: 3px;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+}
+
+.top {
+    background-color: #DFE4EE;
+    width: 100%;
+    text-align:center;
+}
+
+.sectitle {
+    color: 	#3B5998;
+    font-family: arial, verdana, sans-serif;
+    font-variant: small-caps;
+    font-size: 30px;
+    text-indent: 30px;
+    margin: 0px;
+    float: left;
+}
+
+.load {
+    display: inline-block;
+    font-size: 12px;
+}
+
+.showhide {
+    font-size: 12px;
+}
+
+input[type="text"]
+{
+    font-size: 10px;
+}
+
+.showhide {
+    float: right;
+
+    margin: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.content {
+    display: none;
+}
+
+#pow_stats {
+    display: none;
+}
+
+#pow_stats
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    margin: 15px;
+    margin-left: 45px;
+}
+
+#pow_stats td, #pow_stats th
+{
+    text-align: center;
+    padding: 9px 8px 0px 8px;
+    border: 1px solid black;
+}
+
+.ele
+{
+    color: #AA4643;
+}
+
+.gas
+{
+    color: #4572A7;
+}

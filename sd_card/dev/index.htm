@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <title>45 Westway Logger</title>
+    <link href="layout.css" rel="stylesheet" type="text/css">
+    <link href="jqueryUI.css" rel="stylesheet" type="text/css">
+    <script src="jquery.js"></script>
+    <script src="jqueryUI.js"></script>
+    <script src="hcharts.js"></script>
+    <script src="m4HS.js"></script>
+</head>
+<body>
+<div id="now_section" class="section">
+    <div class="top">
+        <h1 class="sectitle">Now</h1>
+        <a id="now_showhide" class="showhide" href="#">show/hide</a>
+        <div class="load">
+            <a class="refresh" id="now_load" href="#">load</a>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div id="now_status"></div>
+    <div id="now_content" class="content">
+        <p>Gas Meter = <span id="gas_meter"></span><br>
+        Gas consumption = <span id="gas_power"></span> <br>
+        Ele Meter = <span id="ele_meter"></span><br>
+        Ele consumption = <span id="ele_power"></span><br>
+        Temperature = <span id="temp"></span><br>
+        Humidity = <span id="hum"></span></p>
+    </div>
+</div>
+<div id="pow_section" class="section">
+    <div class="top">
+        <h1 class="sectitle">Power</h1>
+        <a id="pow_showhide" class="showhide" href="#">show/hide</a>
+        <div class="load">
+            <input size="12" type="text" id="pow_datepicker" />
+            <a class="refresh" id="pow_load" href="#">load date</a><br>
+            <a class="refresh" id="pow_load_overview" href="#">load overview</a>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div id="pow_status"></div>
+    <div id="pow_content" class="content">
+        <table id="pow_stats">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Impulses</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Estimated Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="ele">
+                    <td>Electricity</td>
+                    <td id="ps_ele_imp"></td>
+                    <td></td>
+                    <td id="ps_ele_kwh"></td>
+                    <td id="ps_ele_price"></td>
+                </tr>
+                <tr class="gas">
+                    <td>Gas</td>
+                    <td id="ps_gas_imp"></td>
+                    <td id="ps_gas_m3"></td>
+                    <td id="ps_gas_kwh"></td>
+                    <td id="ps_gas_price"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="pow_diagram"></div>
+    </div>
+</div>
+<div id="env_section" class="section">
+    <div class="top">
+        <h1 class="sectitle">Environment</h1>
+        <a id="env_showhide" class="showhide" href="#">show/hide</a>
+        <div class="load">
+            <input size="12" type="text" id="env_datepicker" /><a class="refresh" id="env_load" href="#">load date</a>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div class="status" id="env_status"></div>
+    <div id="env_content" class="content">
+        <div id="env_diagram"></div>
+    </div>
+</div>
+</body>
+</html>
