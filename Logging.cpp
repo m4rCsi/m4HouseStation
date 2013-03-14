@@ -5,7 +5,6 @@
  *  Author: m4rCsi
  */ 
 #include "Logging.h"
-//#include "Arduino.h"
 #include "globe.h"
 #include "EEPROM.h"
 
@@ -45,7 +44,6 @@ volatile boolean			med_intervall = false;
 volatile boolean			big_intervall = true;
 
 void backupMeters();
-
 
 /************************************************************************/
 /*                                                                      */
@@ -398,7 +396,7 @@ unsigned char readHum()
 	}
 	else
 	{
-		sensorVal = 0;
+		sensorVal = 0; 
 	}
 	return (unsigned char)sensorVal;
 }

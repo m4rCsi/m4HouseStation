@@ -17453,7 +17453,7 @@ unsigned char readHum()
 	}
 	else
 	{
-		sensorVal = 0;
+		sensorVal = 0; 
     5eac:	80 e0       	ldi	r24, 0x00	; 0
     5eae:	90 e0       	ldi	r25, 0x00	; 0
     5eb0:	dc 01       	movw	r26, r24
