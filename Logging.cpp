@@ -113,7 +113,7 @@ void sendLoggingStats(TinyWebServer& web_server)
 	web_server << F("gas_power, ") << gas_power << F("\n");
 	web_server << F("ele_meter, ") << ele_meter << F("\n");
 	web_server << F("ele_power, ") << ele_power << F("\n");
-	web_server << F("temp, ") << temperature << F("\n");
+	web_server << F("temp, ") << (temperature/10) << F(".") << (temperature%10) << F("\n");
 	web_server << F("hum, ") << humidity << F("\n");
 }
 
