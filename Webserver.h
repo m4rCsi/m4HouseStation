@@ -12,11 +12,11 @@
 #include	<SPI.h>
 #include	<Ethernet.h>
 #include	<Flash.h>
-#include	<SD.h>
+#include	"globe.h"
 #include	"TinyWebServer.h"
 
 
-boolean webserver_init();
-void webserver_process();
+boolean		webserver_init();
+void		webserver_process();
 
 #endif

@@ -100,7 +100,6 @@ ISR (INT1_vect)
 		{
 			ele_meter++;
 			ele_counter = 0;
-			
 		}
 	}
 }
@@ -279,7 +278,7 @@ void check_newDay()
 		time.day() != day )
 	{
 		day = time.day();
-		file.open(&root, "meter.txt", FILE_WRITE);
+		file.open(&root, "meter.txt", (O_READ | O_WRITE | O_CREAT));
 		// if the file is available, write to it:
 		if (file.isOpen())
 		{
@@ -333,7 +332,7 @@ void logging_write()
 		
 		getFileName(filename,'M',time);
 	
-		file.open(&root, filename, FILE_WRITE);
+		file.open(&root, filename, (O_READ | O_WRITE | O_CREAT));
 		// if the file is available, write to it:
 		if (file.isOpen()) 
 		{
@@ -429,7 +428,7 @@ void logging_Environment()
 		
 		//Serial.println(filename);
 			
-		file.open(&root, filename, FILE_WRITE);
+		file.open(&root, filename, (O_READ | O_WRITE | O_CREAT));
 		// if the file is available, write to it:
 		if (file.isOpen())
 		{

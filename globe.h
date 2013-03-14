@@ -8,7 +8,8 @@
 #define		GLOBE_H
 
 #include	"RTClib.h"
-#include	"SD.h"
+#include	"Sd2Card.h"
+#include	"SdFat.h"
 
 // RTC
 extern RTC_DS1307	RTC;
