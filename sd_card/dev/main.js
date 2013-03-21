@@ -217,6 +217,11 @@ function processGas(data,avgtimedif)
             sum += data[j][1]*data[j][2];
         }
 
+        if(i == 1)
+        {
+            avg.push([Tfrom,0]);
+        }
+
         avg.push([Tfrom, sum/timedif]);
     }
     return avg;
@@ -393,7 +398,6 @@ function pow_diagramOverview(stringData,renderTo)
                     }
                 }
             },
-
             xAxis: {
                 type: 'datetime'
             },
@@ -556,7 +560,9 @@ function pow_diagram(stringData,renderTo)
                     }
                 }
             },
-
+            tooltip: {
+                valueDecimals: 2
+            },
             xAxis: {
                 type: 'datetime'
             },
@@ -576,7 +582,6 @@ function pow_diagram(stringData,renderTo)
                     }
                 },
                 min: 0,
-                //max: 2000,
                 startOnTick: false,
                 opposite: false
 
@@ -597,7 +602,6 @@ function pow_diagram(stringData,renderTo)
                     }
                 },
                 min: 0,
-                //max: 5,
                 startOnTick: false,
                 opposite: true
             }],
@@ -607,13 +611,6 @@ function pow_diagram(stringData,renderTo)
                     name: 'Electricity',
                     color: '#AA4643'
                 },
-                /*{
-                    yAxis: 1,
-                    data: gas,
-                    name: 'Gas',
-                    step: false,
-                    color: '#4572A7'
-                },*/
                 {
                     yAxis: 1,
                     data: gasavg,
