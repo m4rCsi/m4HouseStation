@@ -1,0 +1,23 @@
+HOWTO compress script and style sheets
+----------------------------------------
+css (tool: http://refresh-sf.com/yui/)
+----------------------------------------
+layout.css
+jqueryUI.css
+
+-> l.css
+
+----------------------------------------
+javascript (tool: closure-compiler) (C:/Programs/closure-compiler)
+----------------------------------------
+jquery.js
+jqueryUI.js
+hcharts.js
+tools.js
+main.js
+-> mainc.js     (use compress_mainc.bat)
+
+jquery.js
+tools.js
+adjust.js
+-> adjc.js      (use compress_adj.bat)
