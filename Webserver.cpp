@@ -71,8 +71,6 @@ void send_file_name(TinyWebServer& web_server, const char* filename) {
   }
 }
 
-
-
 boolean index_handler(TinyWebServer& web_server) {
 	send_file_name(web_server, "index.htm");
 	return true;
@@ -250,6 +248,8 @@ boolean webserver_init()
 
 	if (has_filesystem) 
 	{
+		//TODO read config.txt
+		
 		//Serial << F("has filesystem \n");
 		
 		/*file.open(&root, "datalog.txt", FILE_WRITE);
