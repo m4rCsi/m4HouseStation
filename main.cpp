@@ -18,11 +18,12 @@ boolean		webserver_state = false;
 
 RTC_DS1307 RTC;
 
-
 void setup()
 {
 	// Serial
-	Serial.begin(115200);
+	#ifdef DEBUGM4
+		Serial.begin(115200);
+	#endif
 	
 	// RTC
 	Wire.begin(); 
@@ -31,7 +32,9 @@ void setup()
 	
 	logging_init();
 	
-	Serial.println("Start");	
+	#ifdef DEBUGM4
+		Serial.println("Start");
+	#endif
 	webserver_state = webserver_init();
 	if (!webserver_state)
 	{

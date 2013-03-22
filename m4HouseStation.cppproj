@@ -71,120 +71,140 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGccCpp>
-        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcccpp.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>F_CPU=16000000L</Value>
-            <Value>ARDUINO=103</Value>
-            <Value>ARDUINO=101</Value>
-          </ListValues>
-        </avrgcccpp.compiler.symbols.DefSymbols>
-        <avrgcccpp.compiler.directories.IncludePaths>
-          <ListValues>
-            <Value>C:\Programs\arduino-1.0.3\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Programs\arduino-1.0.3\hardware\arduino\variants\standard</Value>
-          </ListValues>
-        </avrgcccpp.compiler.directories.IncludePaths>
-        <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
-        <avrgcccpp.compiler.optimization.OtherFlags>-fdata-sections</avrgcccpp.compiler.optimization.OtherFlags>
-        <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
-        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
-        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-        <avrgcccpp.compiler.miscellaneous.OtherFlags>-fno-exceptions</avrgcccpp.compiler.miscellaneous.OtherFlags>
-        <avrgcccpp.linker.libraries.Libraries>
-          <ListValues>
-            <Value>m</Value>
-            <Value>core</Value>
-          </ListValues>
-        </avrgcccpp.linker.libraries.Libraries>
-        <avrgcccpp.linker.libraries.LibrarySearchPaths>
-          <ListValues>
-            <Value>D:\Workspace\atmelstudio\arduinoCore</Value>
-            <Value>../../../arduinoCore</Value>
-          </ListValues>
-        </avrgcccpp.linker.libraries.LibrarySearchPaths>
-        <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
-        <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
-      </AvrGccCpp>
-    </ToolchainSettings>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <ToolchainSettings>
-      <AvrGccCpp>
-        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcc.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>ARDUINO=103</Value>
-            <Value>F_CPU=16000000L</Value>
-          </ListValues>
-        </avrgcc.compiler.symbols.DefSymbols>
-        <avrgcc.compiler.directories.IncludePaths>
-          <ListValues>
-            <Value>../arduino</Value>
-          </ListValues>
-        </avrgcc.compiler.directories.IncludePaths>
-        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
-        <avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
-        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcccpp.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>F_CPU=16000000L</Value>
-            <Value>ARDUINO=103</Value>
-          </ListValues>
-        </avrgcccpp.compiler.symbols.DefSymbols>
-        <avrgcccpp.compiler.directories.IncludePaths>
-          <ListValues>
-            <Value>../libraries/Flash</Value>
-            <Value>../libraries/RTClib</Value>
-            <Value>../libraries/TinyWebServer</Value>
-            <Value>../arduino</Value>
-            <Value>../libraries/SD/utility</Value>
-            <Value>../libraries/Ethernet</Value>
-            <Value>../libraries/Ethernet/utility</Value>
-            <Value>../libraries/SPI</Value>
-            <Value>../libraries/EEPROM</Value>
-            <Value>../libraries/Wire</Value>
-            <Value>../libraries/Wire/utility</Value>
-          </ListValues>
-        </avrgcccpp.compiler.directories.IncludePaths>
-        <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
-        <avrgcccpp.compiler.optimization.OtherFlags>-fdata-sections</avrgcccpp.compiler.optimization.OtherFlags>
-        <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
-        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
-        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-        <avrgcccpp.compiler.miscellaneous.OtherFlags>-fno-exceptions</avrgcccpp.compiler.miscellaneous.OtherFlags>
-        <avrgcccpp.linker.libraries.Libraries>
-          <ListValues>
-            <Value>m</Value>
-          </ListValues>
-        </avrgcccpp.linker.libraries.Libraries>
-        <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
-      </AvrGccCpp>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>ARDUINO=103</Value>
+      <Value>F_CPU=16000000L</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../arduino</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcccpp.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>F_CPU=16000000L</Value>
+      <Value>ARDUINO=103</Value>
+      <Value>NDEBUG</Value>
+    </ListValues>
+  </avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../libraries/Flash</Value>
+      <Value>../libraries/RTClib</Value>
+      <Value>../libraries/TinyWebServer</Value>
+      <Value>../arduino</Value>
+      <Value>../libraries/SD/utility</Value>
+      <Value>../libraries/Ethernet</Value>
+      <Value>../libraries/Ethernet/utility</Value>
+      <Value>../libraries/SPI</Value>
+      <Value>../libraries/EEPROM</Value>
+      <Value>../libraries/Wire</Value>
+      <Value>../libraries/Wire/utility</Value>
+    </ListValues>
+  </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.OtherFlags>-fdata-sections</avrgcccpp.compiler.optimization.OtherFlags>
+  <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-fno-exceptions</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.libraries.Libraries>
+    <ListValues>
+      <Value>m</Value>
+    </ListValues>
+  </avrgcccpp.linker.libraries.Libraries>
+  <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
+</AvrGccCpp>
     </ToolchainSettings>
     <OutputFileName>m4HouseStation</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputType>Executable</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>ARDUINO=103</Value>
+      <Value>F_CPU=16000000L</Value>
+      <Value>DEBUGM4</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../arduino</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcccpp.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>F_CPU=16000000L</Value>
+      <Value>ARDUINO=103</Value>
+      <Value>DEBUGM4</Value>
+    </ListValues>
+  </avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../libraries/Flash</Value>
+      <Value>../libraries/RTClib</Value>
+      <Value>../libraries/TinyWebServer</Value>
+      <Value>../arduino</Value>
+      <Value>../libraries/SD/utility</Value>
+      <Value>../libraries/Ethernet</Value>
+      <Value>../libraries/Ethernet/utility</Value>
+      <Value>../libraries/SPI</Value>
+      <Value>../libraries/EEPROM</Value>
+      <Value>../libraries/Wire</Value>
+      <Value>../libraries/Wire/utility</Value>
+    </ListValues>
+  </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.OtherFlags>-fdata-sections</avrgcccpp.compiler.optimization.OtherFlags>
+  <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-fno-exceptions</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.libraries.Libraries>
+    <ListValues>
+      <Value>m</Value>
+    </ListValues>
+  </avrgcccpp.linker.libraries.Libraries>
+  <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
+</AvrGccCpp>
+    </ToolchainSettings>
+    <OutputFileName>m4HouseStation</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputType>Executable</OutputType>
+    <OutputPath>bin\Debug_\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="arduino\Arduino.h">
@@ -446,133 +466,14 @@
     <Folder Include="libraries\SD\utility\" />
     <Folder Include="libraries\SPI\" />
     <Folder Include="libraries\TinyWebServer\" />
-    <Folder Include="libraries\TinyWebServer\examples\" />
-    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\" />
-    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\static\" />
-    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\" />
-    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\libraries\" />
-    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\scopes\" />
-    <Folder Include="libraries\TinyWebServer\examples\FileUpload\" />
-    <Folder Include="libraries\TinyWebServer\examples\FileUpload\html\" />
-    <Folder Include="libraries\TinyWebServer\examples\SimpleWebServer\" />
-    <Folder Include="libraries\TinyWebServer\Unittest\" />
     <Folder Include="libraries\Wire\" />
-    <Folder Include="libraries\Wire\examples\" />
-    <Folder Include="libraries\Wire\examples\digital_potentiometer\" />
-    <Folder Include="libraries\Wire\examples\master_reader\" />
-    <Folder Include="libraries\Wire\examples\master_writer\" />
-    <Folder Include="libraries\Wire\examples\SFRRanger_reader\" />
-    <Folder Include="libraries\Wire\examples\slave_receiver\" />
-    <Folder Include="libraries\Wire\examples\slave_sender\" />
     <Folder Include="libraries\Wire\utility\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="libraries\SPI\keywords.txt">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\BlinkLed.ino">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\README.txt">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\.name">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\encodings.xml">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\libraries\sass_stdlib.xml">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\misc.xml">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\modules.xml">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\scopes\scope_settings.xml">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\static.iml">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\vcs.xml">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\workspace.xml">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\index.htm">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\jquery.js">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\lights.png">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\main.js">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\style.css">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\upload.bat">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\BlinkLed\upload.sh">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\FileUpload\FileUpload.ino">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\FileUpload\html\index.htm">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\FileUpload\html\lava.jpg">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\FileUpload\README.txt">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\FileUpload\upload.bat">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\FileUpload\upload.sh">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\examples\SimpleWebServer\SimpleWebServer.ino">
-      <SubType>compile</SubType>
-    </None>
     <None Include="libraries\TinyWebServer\LICENSE.txt">
       <SubType>compile</SubType>
     </None>
     <None Include="libraries\TinyWebServer\README.md">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\TinyWebServer\Unittest\Unittest.ino">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Wire\examples\digital_potentiometer\digital_potentiometer.ino">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Wire\examples\master_reader\master_reader.ino">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Wire\examples\master_writer\master_writer.ino">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Wire\examples\SFRRanger_reader\SFRRanger_reader.ino">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Wire\examples\slave_receiver\slave_receiver.ino">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Wire\examples\slave_sender\slave_sender.ino">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Wire\keywords.txt">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>
