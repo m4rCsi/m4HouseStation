@@ -1,3 +1,6 @@
+libraries/*/examples/
+libraries/*/keywords.txt
+
 # Object files
 *.o
 

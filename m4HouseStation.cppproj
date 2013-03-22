@@ -160,12 +160,12 @@
       <Value>C:\Programs\arduino-1.0.3\libraries\Ethernet</Value>
       <Value>C:\Programs\arduino-1.0.3\libraries\Ethernet\utility</Value>
       <Value>C:\Programs\arduino-1.0.3\libraries\SPI</Value>
-      <Value>D:\Workspace\atmelstudio\arduinoLibs\RTClib</Value>
       <Value>C:\Programs\arduino-1.0.3\libraries\Wire</Value>
       <Value>C:\Programs\arduino-1.0.3\libraries\Wire\utility</Value>
-      <Value>D:\Workspace\atmelstudio\arduinoLibs\TinyWebServer</Value>
-      <Value>D:\Workspace\atmelstudio\arduinoLibs\Flash</Value>
       <Value>C:\Programs\arduino-1.0.3\libraries\EEPROM</Value>
+      <Value>../libraries/Flash</Value>
+      <Value>../libraries/RTClib</Value>
+      <Value>../libraries/TinyWebServer</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
@@ -193,18 +193,6 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\arduinoLibs\Flash\Flash.cpp">
-      <SubType>compile</SubType>
-      <Link>libraries\Flash.cpp</Link>
-    </Compile>
-    <Compile Include="..\arduinoLibs\RTClib\RTClib.cpp">
-      <SubType>compile</SubType>
-      <Link>libraries\RTClib.cpp</Link>
-    </Compile>
-    <Compile Include="..\arduinoLibs\TinyWebServer\TinyWebServer.cpp">
-      <SubType>compile</SubType>
-      <Link>libraries\TinyWebServer.cpp</Link>
-    </Compile>
     <Compile Include="C:\Programs\arduino-1.0.3\libraries\EEPROM\EEPROM.cpp">
       <SubType>compile</SubType>
       <Link>libraries\EEPROM.cpp</Link>
@@ -268,6 +256,24 @@
     <Compile Include="globe.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="libraries\Flash\Flash.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Flash\Flash.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\RTClib\RTClib.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\RTClib\RTClib.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\TinyWebServer\TinyWebServer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\TinyWebServer\TinyWebServer.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Logging.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -286,6 +292,136 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="libraries" />
+    <Folder Include="libraries\Flash\" />
+    <Folder Include="libraries\Flash\examples\" />
+    <Folder Include="libraries\Flash\examples\flash_example\" />
+    <Folder Include="libraries\Flash\examples\flash_streaming\" />
+    <Folder Include="libraries\RTClib\" />
+    <Folder Include="libraries\RTClib\examples\" />
+    <Folder Include="libraries\RTClib\examples\datecalc\" />
+    <Folder Include="libraries\RTClib\examples\ds1307\" />
+    <Folder Include="libraries\RTClib\examples\softrtc\" />
+    <Folder Include="libraries\TinyWebServer\" />
+    <Folder Include="libraries\TinyWebServer\examples\" />
+    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\" />
+    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\static\" />
+    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\" />
+    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\libraries\" />
+    <Folder Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\scopes\" />
+    <Folder Include="libraries\TinyWebServer\examples\FileUpload\" />
+    <Folder Include="libraries\TinyWebServer\examples\FileUpload\html\" />
+    <Folder Include="libraries\TinyWebServer\examples\SimpleWebServer\" />
+    <Folder Include="libraries\TinyWebServer\Unittest\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libraries\Flash\examples\flash_example\flash_example.pde">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\Flash\examples\flash_streaming\flash_streaming.pde">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\Flash\keywords.txt">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\Flash\patching_print.txt">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\RTClib\examples\datecalc\datecalc.pde">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\RTClib\examples\ds1307\ds1307.pde">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\RTClib\examples\softrtc\softrtc.pde">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\RTClib\keywords.txt">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\BlinkLed.ino">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\README.txt">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\.name">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\encodings.xml">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\libraries\sass_stdlib.xml">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\misc.xml">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\modules.xml">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\scopes\scope_settings.xml">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\static.iml">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\vcs.xml">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\.idea\workspace.xml">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\index.htm">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\jquery.js">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\lights.png">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\main.js">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\static\style.css">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\upload.bat">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\BlinkLed\upload.sh">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\FileUpload\FileUpload.ino">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\FileUpload\html\index.htm">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\FileUpload\html\lava.jpg">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\FileUpload\README.txt">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\FileUpload\upload.bat">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\FileUpload\upload.sh">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\examples\SimpleWebServer\SimpleWebServer.ino">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\LICENSE.txt">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\README.md">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\Unittest\Unittest.ino">
+      <SubType>compile</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
