@@ -166,6 +166,7 @@
       <Value>D:\Workspace\atmelstudio\arduinoLibs\TinyWebServer</Value>
       <Value>D:\Workspace\atmelstudio\arduinoLibs\Flash</Value>
       <Value>C:\Programs\arduino-1.0.3\libraries\EEPROM</Value>
+      <Value>D:\Workspace\atmelstudio\arduinoLibs\IniFile</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
@@ -196,6 +197,10 @@
     <Compile Include="..\arduinoLibs\Flash\Flash.cpp">
       <SubType>compile</SubType>
       <Link>libraries\Flash.cpp</Link>
+    </Compile>
+    <Compile Include="..\arduinoLibs\IniFile\IniFile.cpp">
+      <SubType>compile</SubType>
+      <Link>libraries\IniFile.cpp</Link>
     </Compile>
     <Compile Include="..\arduinoLibs\RTClib\RTClib.cpp">
       <SubType>compile</SubType>
