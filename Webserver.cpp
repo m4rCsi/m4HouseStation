@@ -71,8 +71,6 @@ void send_file_name(TinyWebServer& web_server, const char* filename) {
   }
 }
 
-
-
 boolean index_handler(TinyWebServer& web_server) {
 	send_file_name(web_server, "index.htm");
 	return true;
