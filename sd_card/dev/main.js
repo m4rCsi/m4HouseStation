@@ -1,91 +1,3 @@
-Array.prototype.insert = function (index, item)
-{
-    this.splice(index, 0, item);
-};
-
-function CSVToArray( strData, strDelimiter )
-{
-    // Check to see if the delimiter is defined. If not,
-    // then default to comma.
-    strDelimiter = (strDelimiter || ",");
-
-    // Create a regular expression to parse the CSV values.
-    var objPattern = new RegExp(
-        (
-            // Delimiters.
-            "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-
-                // Quoted fields.
-                "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-
-                // Standard fields.
-                "([^\"\\" + strDelimiter + "\\r\\n]*))"
-            ),
-        "gi"
-    );
-
-
-    // Create an array to hold our data. Give the array
-    // a default empty first row.
-    var arrData = [[]];
-
-    // Create an array to hold our individual pattern
-    // matching groups.
-    var arrMatches = null;
-
-
-    // Keep looping over the regular expression matches
-    // until we can no longer find a match.
-    while (arrMatches = objPattern.exec( strData )){
-
-        // Get the delimiter that was found.
-        var strMatchedDelimiter = arrMatches[ 1 ];
-
-        // Check to see if the given delimiter has a length
-        // (is not the start of string) and if it matches
-        // field delimiter. If id does not, then we know
-        // that this delimiter is a row delimiter.
-        if (
-            strMatchedDelimiter.length &&
-                (strMatchedDelimiter != strDelimiter)
-            ){
-
-            // Since we have reached a new row of data,
-            // add an empty row to our data array.
-            arrData.push( [] );
-
-        }
-
-
-        // Now that we have our delimiter out of the way,
-        // let's check to see which kind of value we
-        // captured (quoted or unquoted).
-        if (arrMatches[ 2 ]){
-
-            // We found a quoted value. When we capture
-            // this value, unescape any double quotes.
-            var strMatchedValue = arrMatches[ 2 ].replace(
-                new RegExp( "\"\"", "g" ),
-                "\""
-            );
-
-        } else {
-
-            // We found a non-quoted value.
-            var strMatchedValue = arrMatches[ 3 ];
-
-        }
-
-
-        // Now that we have our value string, let's add
-        // it to the data array.
-        arrData[ arrData.length - 1 ].push( strMatchedValue );
-    }
-
-    // Return the parsed data.
-    return( arrData );
-}
-
 function UnixTStoTime(unix_timestamp)
 {
 // create a new javascript Date object based on the timestamp
@@ -305,6 +217,11 @@ function processGas(data,avgtimedif)
             sum += data[j][1]*data[j][2];
         }
 
+        if(i == 1)
+        {
+            avg.push([Tfrom,0]);
+        }
+
         avg.push([Tfrom, sum/timedif]);
     }
     return avg;
@@ -481,7 +398,6 @@ function pow_diagramOverview(stringData,renderTo)
                     }
                 }
             },
-
             xAxis: {
                 type: 'datetime'
             },
@@ -644,7 +560,9 @@ function pow_diagram(stringData,renderTo)
                     }
                 }
             },
-
+            tooltip: {
+                valueDecimals: 2
+            },
             xAxis: {
                 type: 'datetime'
             },
@@ -664,7 +582,6 @@ function pow_diagram(stringData,renderTo)
                     }
                 },
                 min: 0,
-                //max: 2000,
                 startOnTick: false,
                 opposite: false
 
@@ -685,7 +602,6 @@ function pow_diagram(stringData,renderTo)
                     }
                 },
                 min: 0,
-                //max: 5,
                 startOnTick: false,
                 opposite: true
             }],
@@ -695,13 +611,6 @@ function pow_diagram(stringData,renderTo)
                     name: 'Electricity',
                     color: '#AA4643'
                 },
-                /*{
-                    yAxis: 1,
-                    data: gas,
-                    name: 'Gas',
-                    step: false,
-                    color: '#4572A7'
-                },*/
                 {
                     yAxis: 1,
                     data: gasavg,
@@ -712,22 +621,15 @@ function pow_diagram(stringData,renderTo)
         });
 }
 
-function digitShift(leftshift, data)
-{
-    if (leftshift > 0)
-        return data / (Math.pow(10,leftshift));
-    return data;
-}
-
 var gas_meter = 0;
 var ele_meter = 0;
 
 function display_now(stringData, renderTo)
 {
     var vars = {};
-    vars["gas_meter"] = ["Gas Meter", 2, "m3 <a id=\"adjust_gas_meter\" href=\"#\">adjust</a>"];
+    vars["gas_meter"] = ["Gas Meter", 2, "m3"];
     vars["gas_power"] = ["Gas consumption",3, "m3/h"];
-    vars["ele_meter"] = ["Ele Meter", 1, "kWh <a id=\"adjust_ele_meter\" href=\"#\">adjust</a>"];
+    vars["ele_meter"] = ["Ele Meter", 1, "kWh"];
     vars["ele_power"] = ["Ele consumption",0,"W"];
     vars["temp"] =      ["Temperature",0,"°C"];
     vars["hum"] =       ["Humidity",0,"% RH"];
@@ -739,52 +641,8 @@ function display_now(stringData, renderTo)
         var field_name = raw[i][0];
         if (field_name in vars)
         {
-
             var element=document.getElementById(field_name);
             element.innerHTML=digitShift(vars[field_name][1], raw[i][1])+ " " +vars[field_name][2] ;
-
-            if (field_name == "gas_meter")
-            {
-                gas_meter = Number(raw[i][1]);
-                $(function() {
-                    $("#adjust_gas_meter").click(function() {
-                        //e.preventDefault(); // if desired...
-                        var value = prompt("Adjust Gas Meter",gas_meter);
-                        if (value != null)
-                        {
-                            $.ajax({
-                                url:  "/",
-                                type: "POST",
-                                data: {g: value }
-                            })
-                                .done( function(data){
-                                    alert("Gas Meter adjusted to " + value + ".");
-                                });
-                            return false;
-                        }
-                    });
-                });
-            }
-            else if (field_name == "ele_meter")
-            {
-                ele_meter = Number(raw[i][1]);
-                $("#adjust_ele_meter").click(function() {
-                    //e.preventDefault(); // if desired...
-                    var value = prompt("Adjust Ele Meter",ele_meter);
-                    if (value != null)
-                    {
-                        $.ajax({
-                            url:  "/",
-                            type: "POST",
-                            data: {e: value }
-                        })
-                            .done( function(data){
-                                alert("Ele Meter adjusted to " + value + "." + data);
-                            });
-                        return false;
-                    }
-                });
-            }
         }
     }
     setNowStatus("",1);
