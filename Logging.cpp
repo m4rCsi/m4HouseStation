@@ -451,7 +451,9 @@ void logging_Environment()
 		else
 		{
 			// if the file isn't open, pop up an error:
-			Serial << F("error writing E");
+			#ifdef DEBUGM4
+				Serial << F("error writing E");
+			#endif
 		}
 	}
 }

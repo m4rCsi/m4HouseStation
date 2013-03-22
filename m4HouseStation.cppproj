@@ -71,57 +71,6 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGccCpp>
-        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcccpp.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>F_CPU=16000000L</Value>
-            <Value>ARDUINO=103</Value>
-            <Value>ARDUINO=101</Value>
-          </ListValues>
-        </avrgcccpp.compiler.symbols.DefSymbols>
-        <avrgcccpp.compiler.directories.IncludePaths>
-          <ListValues>
-            <Value>C:\Programs\arduino-1.0.3\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Programs\arduino-1.0.3\hardware\arduino\variants\standard</Value>
-          </ListValues>
-        </avrgcccpp.compiler.directories.IncludePaths>
-        <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
-        <avrgcccpp.compiler.optimization.OtherFlags>-fdata-sections</avrgcccpp.compiler.optimization.OtherFlags>
-        <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
-        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
-        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-        <avrgcccpp.compiler.miscellaneous.OtherFlags>-fno-exceptions</avrgcccpp.compiler.miscellaneous.OtherFlags>
-        <avrgcccpp.linker.libraries.Libraries>
-          <ListValues>
-            <Value>m</Value>
-            <Value>core</Value>
-          </ListValues>
-        </avrgcccpp.linker.libraries.Libraries>
-        <avrgcccpp.linker.libraries.LibrarySearchPaths>
-          <ListValues>
-            <Value>D:\Workspace\atmelstudio\arduinoCore</Value>
-            <Value>../../../arduinoCore</Value>
-          </ListValues>
-        </avrgcccpp.linker.libraries.LibrarySearchPaths>
-        <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
-        <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
-      </AvrGccCpp>
-    </ToolchainSettings>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <ToolchainSettings>
-      <AvrGccCpp>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
@@ -136,11 +85,11 @@
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>C:\Programs\arduino-1.0.3\hardware\arduino\cores\arduino</Value>
-      <Value>C:\Programs\arduino-1.0.3\hardware\arduino\variants\standard</Value>
+      <Value>../arduino</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
   <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
   <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
@@ -150,23 +99,22 @@
     <ListValues>
       <Value>F_CPU=16000000L</Value>
       <Value>ARDUINO=103</Value>
+      <Value>NDEBUG</Value>
     </ListValues>
   </avrgcccpp.compiler.symbols.DefSymbols>
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>C:\Programs\arduino-1.0.3\hardware\arduino\cores\arduino</Value>
-      <Value>C:\Programs\arduino-1.0.3\hardware\arduino\variants\standard</Value>
-      <Value>C:\Programs\arduino-1.0.3\libraries\SD\utility</Value>
-      <Value>C:\Programs\arduino-1.0.3\libraries\Ethernet</Value>
-      <Value>C:\Programs\arduino-1.0.3\libraries\Ethernet\utility</Value>
-      <Value>C:\Programs\arduino-1.0.3\libraries\SPI</Value>
-      <Value>D:\Workspace\atmelstudio\arduinoLibs\RTClib</Value>
-      <Value>C:\Programs\arduino-1.0.3\libraries\Wire</Value>
-      <Value>C:\Programs\arduino-1.0.3\libraries\Wire\utility</Value>
-      <Value>D:\Workspace\atmelstudio\arduinoLibs\TinyWebServer</Value>
-      <Value>D:\Workspace\atmelstudio\arduinoLibs\Flash</Value>
-      <Value>C:\Programs\arduino-1.0.3\libraries\EEPROM</Value>
-      <Value>D:\Workspace\atmelstudio\arduinoLibs\IniFile</Value>
+      <Value>../libraries/Flash</Value>
+      <Value>../libraries/RTClib</Value>
+      <Value>../libraries/TinyWebServer</Value>
+      <Value>../arduino</Value>
+      <Value>../libraries/SD/utility</Value>
+      <Value>../libraries/Ethernet</Value>
+      <Value>../libraries/Ethernet/utility</Value>
+      <Value>../libraries/SPI</Value>
+      <Value>../libraries/EEPROM</Value>
+      <Value>../libraries/Wire</Value>
+      <Value>../libraries/Wire/utility</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
@@ -174,103 +122,320 @@
   <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
   <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
-  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
   <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
   <avrgcccpp.compiler.miscellaneous.OtherFlags>-fno-exceptions</avrgcccpp.compiler.miscellaneous.OtherFlags>
   <avrgcccpp.linker.libraries.Libraries>
     <ListValues>
       <Value>m</Value>
-      <Value>core</Value>
     </ListValues>
   </avrgcccpp.linker.libraries.Libraries>
-  <avrgcccpp.linker.libraries.LibrarySearchPaths>
-    <ListValues>
-      <Value>D:\Workspace\atmelstudio\arduinoCore\Uno</Value>
-    </ListValues>
-  </avrgcccpp.linker.libraries.LibrarySearchPaths>
   <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
-  <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
+    <OutputFileName>m4HouseStation</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputType>Executable</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>ARDUINO=103</Value>
+      <Value>F_CPU=16000000L</Value>
+      <Value>DEBUGM4</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../arduino</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcccpp.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>F_CPU=16000000L</Value>
+      <Value>ARDUINO=103</Value>
+      <Value>DEBUGM4</Value>
+    </ListValues>
+  </avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../libraries/Flash</Value>
+      <Value>../libraries/RTClib</Value>
+      <Value>../libraries/TinyWebServer</Value>
+      <Value>../arduino</Value>
+      <Value>../libraries/SD/utility</Value>
+      <Value>../libraries/Ethernet</Value>
+      <Value>../libraries/Ethernet/utility</Value>
+      <Value>../libraries/SPI</Value>
+      <Value>../libraries/EEPROM</Value>
+      <Value>../libraries/Wire</Value>
+      <Value>../libraries/Wire/utility</Value>
+    </ListValues>
+  </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.OtherFlags>-fdata-sections</avrgcccpp.compiler.optimization.OtherFlags>
+  <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-fno-exceptions</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.libraries.Libraries>
+    <ListValues>
+      <Value>m</Value>
+    </ListValues>
+  </avrgcccpp.linker.libraries.Libraries>
+  <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
+</AvrGccCpp>
+    </ToolchainSettings>
+    <OutputFileName>m4HouseStation</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputType>Executable</OutputType>
+    <OutputPath>bin\Debug_\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\arduinoLibs\Flash\Flash.cpp">
+    <Compile Include="arduino\Arduino.h">
       <SubType>compile</SubType>
-      <Link>libraries\Flash.cpp</Link>
     </Compile>
-    <Compile Include="..\arduinoLibs\IniFile\IniFile.cpp">
+    <Compile Include="arduino\binary.h">
       <SubType>compile</SubType>
-      <Link>libraries\IniFile.cpp</Link>
     </Compile>
-    <Compile Include="..\arduinoLibs\RTClib\RTClib.cpp">
+    <Compile Include="arduino\CDC.cpp">
       <SubType>compile</SubType>
-      <Link>libraries\RTClib.cpp</Link>
     </Compile>
-    <Compile Include="..\arduinoLibs\TinyWebServer\TinyWebServer.cpp">
+    <Compile Include="arduino\Client.h">
       <SubType>compile</SubType>
-      <Link>libraries\TinyWebServer.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\EEPROM\EEPROM.cpp">
+    <Compile Include="arduino\HardwareSerial.cpp">
       <SubType>compile</SubType>
-      <Link>libraries\EEPROM.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Ethernet\Dhcp.cpp">
+    <Compile Include="arduino\HardwareSerial.h">
       <SubType>compile</SubType>
-      <Link>libraries\Dhcp.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Ethernet\Dns.cpp">
+    <Compile Include="arduino\HID.cpp">
       <SubType>compile</SubType>
-      <Link>libraries\Dns.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Ethernet\Ethernet.cpp">
+    <Compile Include="arduino\IPAddress.cpp">
       <SubType>compile</SubType>
-      <Link>libraries\Ethernet.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Ethernet\EthernetClient.cpp">
+    <Compile Include="arduino\IPAddress.h">
       <SubType>compile</SubType>
-      <Link>libraries\EthernetClient.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Ethernet\EthernetServer.cpp">
+    <Compile Include="arduino\new.cpp">
       <SubType>compile</SubType>
-      <Link>libraries\EthernetServer.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Ethernet\EthernetUdp.cpp">
+    <Compile Include="arduino\new.h">
       <SubType>compile</SubType>
-      <Link>libraries\EthernetUdp.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Ethernet\utility\socket.cpp">
+    <Compile Include="arduino\pins_arduino.h">
       <SubType>compile</SubType>
-      <Link>libraries\socket.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Ethernet\utility\w5100.cpp">
+    <Compile Include="arduino\Platform.h">
       <SubType>compile</SubType>
-      <Link>libraries\w5100.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\SD\utility\Sd2Card.cpp">
+    <Compile Include="arduino\Print.cpp">
       <SubType>compile</SubType>
-      <Link>libraries\Sd2Card.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\SD\utility\SdFile.cpp">
+    <Compile Include="arduino\Print.h">
       <SubType>compile</SubType>
-      <Link>libraries\SdFile.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\SD\utility\SdVolume.cpp">
+    <Compile Include="arduino\Printable.h">
       <SubType>compile</SubType>
-      <Link>libraries\SdVolume.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\SPI\SPI.cpp">
+    <Compile Include="arduino\Server.h">
       <SubType>compile</SubType>
-      <Link>libraries\SPI.cpp</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Wire\utility\twi.c">
+    <Compile Include="arduino\Stream.cpp">
       <SubType>compile</SubType>
-      <Link>libraries\twi.c</Link>
     </Compile>
-    <Compile Include="C:\Programs\arduino-1.0.3\libraries\Wire\Wire.cpp">
+    <Compile Include="arduino\Stream.h">
       <SubType>compile</SubType>
-      <Link>libraries\Wire.cpp</Link>
+    </Compile>
+    <Compile Include="arduino\Tone.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\Udp.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\USBAPI.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\USBCore.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\USBCore.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\USBDesc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\WCharacter.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\wiring.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\wiring_analog.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\wiring_digital.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\wiring_private.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\wiring_pulse.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\wiring_shift.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\WMath.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\WString.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="arduino\WString.h">
+      <SubType>compile</SubType>
     </Compile>
     <Compile Include="globe.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\EEPROM\EEPROM.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\EEPROM\EEPROM.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\Dhcp.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\Dhcp.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\Dns.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\Dns.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\Ethernet.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\Ethernet.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\EthernetClient.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\EthernetClient.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\EthernetServer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\EthernetServer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\EthernetUdp.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\EthernetUdp.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\util.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\utility\socket.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\utility\socket.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\utility\w5100.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Ethernet\utility\w5100.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Flash\Flash.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Flash\Flash.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\RTClib\RTClib.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\RTClib\RTClib.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\FatStructs.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\Sd2Card.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\Sd2Card.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\Sd2PinMap.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\SdFat.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\SdFatmainpage.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\SdFatUtil.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\SdFile.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\SdInfo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SD\utility\SdVolume.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SPI\SPI.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\SPI\SPI.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\TinyWebServer\TinyWebServer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\TinyWebServer\TinyWebServer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Wire\utility\twi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Wire\utility\twi.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Wire\Wire.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libraries\Wire\Wire.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Logging.cpp">
@@ -290,7 +455,27 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="arduino\" />
     <Folder Include="libraries" />
+    <Folder Include="libraries\EEPROM\" />
+    <Folder Include="libraries\Ethernet\" />
+    <Folder Include="libraries\Ethernet\utility\" />
+    <Folder Include="libraries\Flash\" />
+    <Folder Include="libraries\RTClib\" />
+    <Folder Include="libraries\SD\" />
+    <Folder Include="libraries\SD\utility\" />
+    <Folder Include="libraries\SPI\" />
+    <Folder Include="libraries\TinyWebServer\" />
+    <Folder Include="libraries\Wire\" />
+    <Folder Include="libraries\Wire\utility\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libraries\TinyWebServer\LICENSE.txt">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="libraries\TinyWebServer\README.md">
+      <SubType>compile</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

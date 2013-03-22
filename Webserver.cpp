@@ -148,10 +148,12 @@ char					parseMeter = 0;
 
 void parsePost(char c, int available)
 {
-	Serial.print("p: ");
-	Serial.print(c);
-	Serial.print(" a: ");
-	Serial.println(available);
+	#ifdef DEBUGM4
+		Serial.print("p: ");
+		Serial.print(c);
+		Serial.print(" a: ");
+		Serial.println(available);
+	#endif
 	
 	switch (pState)
 	{
@@ -190,7 +192,10 @@ void parsePost(char c, int available)
 					
 					if (available == 0 || c == '&')
 					{
-						Serial.println(parseValue);
+						#ifdef DEBUGM4
+							Serial.println(parseValue);
+						#endif
+						
 						setMeters(parseMeter,parseValue);
 						pState = START;
 						parseMeter = 0;
