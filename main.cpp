@@ -10,16 +10,11 @@
 #include	"Logging.h"
 #include	"globe.h"
 
-void		setup();
-void		loop();
-
-boolean		logging_state = false;
-boolean		webserver_state = false;
-
 RTC_DS1307 RTC;
 
 void setup()
 {
+	boolean		webserver_state = false;
 	// Serial
 	#ifdef DEBUGM4
 		Serial.begin(115200);
@@ -28,7 +23,10 @@ void setup()
 	// RTC
 	Wire.begin(); 
 	RTC.begin();
-	//RTC.adjust(DateTime(__DATE__, __TIME__));
+	
+	#ifdef ADJUSTTIME
+		RTC.adjust(DateTime(__DATE__, __TIME__));
+	#endif
 	
 	logging_init();
 	
@@ -38,45 +36,52 @@ void setup()
 	webserver_state = webserver_init();
 	if (!webserver_state)
 	{
-		Serial << F("Webserver Failed");
+		#ifdef DEBUGM4
+			Serial << F("Webserver Failed");
+		#endif
 		while(1){};
 	}
 }
 
-void pointtick()
-{
-	static unsigned int counter = 0;
-	if (counter++ > 60000)
+#ifdef DEBUGTICK
+	void pointtick()
 	{
-		Serial.println(".");
-		//printDate();
-		counter = 0;
+		static unsigned int counter = 0;
+		if (counter++ > 60000)
+		{
+			Serial.println(".");
+			counter = 0;
+		}
 	}
-}
-
-void loop()
-{
-	logging_process();
-	webserver_process();
-	//pointtick();
-}
+#endif
 
 /************************************************************************/
-/* Original main function from arduino                                  */
+/* Custom main function					                                */
 /************************************************************************/
 int main(void)
 {
 	init();
 
-	#if defined(USBCON)
-	USBDevice.attach();
+	#ifdef DEBUGM4
+		#if defined(USBCON)
+		USBDevice.attach();
+		#endif
 	#endif
 	
 	setup();
 	
-	for (;;) {
-		loop();
-		if (serialEventRun) serialEventRun();
+	for (;;) 
+	{
+		logging_process();
+		webserver_process();
+		
+		#ifdef DEBUGTICK
+			pointtick();
+		#endif
+		
+		#ifdef DEBUGM4
+			if (serialEventRun) serialEventRun();
+		#endif
 	}
 	
 	return 0;
