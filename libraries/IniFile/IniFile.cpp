@@ -4,14 +4,14 @@
 
 const uint8_t IniFile::maxFilenameLen = INI_FILE_MAX_FILENAME_LEN;
 
-IniFile::IniFile(const char* filename, uint8_t mode,
+IniFile::IniFile(SdFile file, 
 		 bool caseSensitive)
 {
-  if (strlen(filename) <= maxFilenameLen)
+  /*if (strlen(filename) <= maxFilenameLen)
     strcpy(_filename, filename);
   else
     _filename[0] = '\0';
-  _mode = mode;
+  _mode = mode;*/
   _caseSensitive = caseSensitive;
 }
 
@@ -42,7 +42,7 @@ bool IniFile::getValue(const char* section, const char* key,
 			  char* buffer, size_t len, IniFileState &state) const
 {
   bool done = false;
-  if (!_file) {
+  if (!_file.isOpen()) {
     _error = errorFileNotOpen;
     return true;
   }
@@ -290,15 +290,15 @@ bool IniFile::getMACAddress(const char* section, const char* key,
 }
 
 //int8_t IniFile::readLine(File &file, char *buffer, size_t len, uint32_t &pos)
-IniFile::error_t IniFile::readLine(File &file, char *buffer, size_t len, uint32_t &pos)
+IniFile::error_t IniFile::readLine(SdFile &file, char *buffer, size_t len, uint32_t &pos)
 {
-  if (!file)
+  if (!file.isOpen())
     return errorFileNotOpen;
  
   if (len < 3) 
     return errorBufferTooSmall;
 
-  if (!file.seek(pos))
+  if (!file.seekSet(pos))
     return errorSeekError;
 
   size_t bytesRead = file.read(buffer, len);
@@ -326,7 +326,8 @@ IniFile::error_t IniFile::readLine(File &file, char *buffer, size_t len, uint32_
       return errorNoError;
     }
   }
-  if (!file.available()) {
+  uint32_t n = file.fileSize() < file.curPosition(); 
+  if (n > 0X7FFF) {  
     // end of file without a newline
     buffer[bytesRead] = '\0';
     // return 1; //done

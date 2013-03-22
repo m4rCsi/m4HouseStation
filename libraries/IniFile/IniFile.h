@@ -8,7 +8,8 @@
 // m4rCsi: changed from #include <SD.h> to this:
 #include	"Sd2Card.h"
 #include	"SdFat.h"
-#include "Ethernet.h"
+
+#include	"Ethernet.h"
 
 class IniFileState;
 
@@ -29,13 +30,12 @@ public:
   static const uint8_t maxFilenameLen;
 
   // Create an IniFile object. It isn't opened until open() is called on it.
-  IniFile(const char* filename, uint8_t mode = FILE_READ,
+  IniFile(SdFile file, 
 	  bool caseSensitive = false);
   ~IniFile();
 
-  inline bool open(void); // Returns true if open succeeded
+  inline bool open(void);
   inline void close(void);
-
   inline bool isOpen(void) const;
 
   inline error_t getError(void) const;
@@ -96,7 +96,7 @@ public:
 
   // Utility function to read a line from a file, make available to all
   //static int8_t readLine(File &file, char *buffer, size_t len, uint32_t &pos);
-  static error_t readLine(File &file, char *buffer, size_t len, uint32_t &pos);
+  static error_t readLine(SdFile &file, char *buffer, size_t len, uint32_t &pos);
   static bool isCommentChar(char c);
   static char* skipWhiteSpace(char* str);
   static void removeTrailingWhiteSpace(char* str);
@@ -116,34 +116,35 @@ private:
   char _filename[INI_FILE_MAX_FILENAME_LEN];
   uint8_t _mode;
   mutable error_t _error;
-  mutable File _file;
+  mutable SdFile _file;
   bool _caseSensitive;
 };
 
 bool IniFile::open(void)
 {
-  if (_file)
+/*  if (_file.isOpen())
     _file.close();
-  _file = SD.open(_filename, _mode);
-  if (isOpen()) {
+  _file.open(_filename, _mode);
+  if (_file.isOpen()) {
     _error = errorNoError;
     return true;
   }
   else {
     _error = errorFileNotFound;
     return false;
-  }
+  }*/
+	return _file.isOpen();
 }
 
 void IniFile::close(void)
 {
-  if (_file)
+  if (_file.isOpen())
     _file.close();
 }
 
 bool IniFile::isOpen(void) const
 {
-  return (_file == true);
+  return _file.isOpen();
 }
 
 IniFile::error_t IniFile::getError(void) const

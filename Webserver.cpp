@@ -1,5 +1,6 @@
 ﻿#include	"Webserver.h"
 #include	"Logging.h"
+#include	"IniFile.h"
 
 // pin 4 is the SPI select pin for the SDcard
 const int SD_CS = 4;
@@ -253,7 +254,24 @@ boolean webserver_init()
 
 	if (has_filesystem) 
 	{
-		//TODO read config.txt
+		//read config.txt
+		file.open(&root, "config.ini", O_READ);
+		if(file.isOpen())
+		{
+			const size_t bufferLen = 80;
+			char buffer[bufferLen];
+			IniFile ini(file);
+			
+			ini.validate(buffer, bufferLen);
+			
+			if(ini.getIPAddress(NULL, "ip",buffer, bufferLen, ip))
+			{
+				
+			}
+		}
+		
+		
+		
 		
 		//Serial << F("has filesystem \n");
 		
