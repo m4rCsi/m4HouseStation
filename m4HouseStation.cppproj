@@ -293,14 +293,7 @@
   <ItemGroup>
     <Folder Include="libraries" />
     <Folder Include="libraries\Flash\" />
-    <Folder Include="libraries\Flash\examples\" />
-    <Folder Include="libraries\Flash\examples\flash_example\" />
-    <Folder Include="libraries\Flash\examples\flash_streaming\" />
     <Folder Include="libraries\RTClib\" />
-    <Folder Include="libraries\RTClib\examples\" />
-    <Folder Include="libraries\RTClib\examples\datecalc\" />
-    <Folder Include="libraries\RTClib\examples\ds1307\" />
-    <Folder Include="libraries\RTClib\examples\softrtc\" />
     <Folder Include="libraries\TinyWebServer\" />
     <Folder Include="libraries\TinyWebServer\examples\" />
     <Folder Include="libraries\TinyWebServer\examples\BlinkLed\" />
@@ -314,30 +307,6 @@
     <Folder Include="libraries\TinyWebServer\Unittest\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="libraries\Flash\examples\flash_example\flash_example.pde">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Flash\examples\flash_streaming\flash_streaming.pde">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Flash\keywords.txt">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\Flash\patching_print.txt">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\RTClib\examples\datecalc\datecalc.pde">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\RTClib\examples\ds1307\ds1307.pde">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\RTClib\examples\softrtc\softrtc.pde">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="libraries\RTClib\keywords.txt">
-      <SubType>compile</SubType>
-    </None>
     <None Include="libraries\TinyWebServer\examples\BlinkLed\BlinkLed.ino">
       <SubType>compile</SubType>
     </None>
