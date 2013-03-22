@@ -45,5 +45,8 @@
 *.mk
 *.S
 
+*.atsuo
+*.atsln
+
 Makefile
 
