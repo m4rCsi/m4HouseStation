@@ -12,6 +12,8 @@
 
 RTC_DS1307 RTC;
 
+//#define ADJUSTTIME
+
 void setup()
 {
 	boolean		webserver_state = false;
@@ -84,6 +86,5 @@ int main(void)
 			if (serialEventRun) serialEventRun();
 		#endif
 	}
-	
 	return 0;
 }
