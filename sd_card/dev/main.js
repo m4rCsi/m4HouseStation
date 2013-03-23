@@ -398,6 +398,9 @@ function pow_diagramOverview(stringData,renderTo)
                     }
                 }
             },
+            tooltip: {
+                valueDecimals: 2
+            },
             xAxis: {
                 type: 'datetime'
             },
