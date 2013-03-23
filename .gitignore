@@ -2,6 +2,7 @@ libraries/*/examples/
 libraries/*/keywords.txt
 libraries/*/test/
 libraries/*/Unittest
+analysis
 
 # Object files
 *.o
