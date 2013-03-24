@@ -20,6 +20,7 @@ void setup()
 	// Serial
 	#ifdef DEBUGM4
 		Serial.begin(115200);
+		Serial.println("Setup");
 	#endif
 	
 	// RTC
@@ -32,10 +33,6 @@ void setup()
 	
 	logging_init();
 	
-	#ifdef DEBUGM4
-		Serial.println("Start");
-	#endif
-	
 	webserver_state = webserver_init();
 	if (!webserver_state)
 	{
@@ -44,6 +41,9 @@ void setup()
 		#endif
 		while(1){};
 	}
+	#ifdef DEBUGM4
+		Serial.println("Setup finished...Starting");
+	#endif
 }
 
 #ifdef DEBUGTICK
