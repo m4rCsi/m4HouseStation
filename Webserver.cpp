@@ -294,7 +294,7 @@ int webserver_init()
 		return -1;
 		
 	Serial << F("SD present\n");
-	//read config.txt
+	//read config.ini
 	file.open(&root, "config.ini", O_READ);
 	if(file.isOpen())
 	{
@@ -334,7 +334,6 @@ int webserver_init()
 		return -2;
 	}
 
-	
 	// Initialize the Ethernet.
 	//Serial << F("Setting up the Ethernet card...\n");
 	Ethernet.begin(mac,ip);
