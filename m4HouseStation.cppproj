@@ -33,7 +33,7 @@
       </OverrideVtorValue>
       <Channel>
         <host>127.0.0.1</host>
-        <port>3013</port>
+        <port>4599</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>
@@ -132,8 +132,6 @@
     </ListValues>
   </avrgcccpp.linker.libraries.Libraries>
   <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
-  <avrgcccpp.linker.optimization.PutReadOnlyDataInWritableDataSection>True</avrgcccpp.linker.optimization.PutReadOnlyDataInWritableDataSection>
-  <avrgcccpp.linker.miscellaneous.LinkerFlags>-Wl,--strip-all</avrgcccpp.linker.miscellaneous.LinkerFlags>
 </AvrGccCpp>
     </ToolchainSettings>
     <OutputFileName>m4HouseStation</OutputFileName>

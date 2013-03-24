@@ -13,6 +13,7 @@
 RTC_DS1307 RTC;
 
 //#define ADJUSTTIME
+//#define DISABLELOGGING
 
 void setup()
 {
@@ -30,7 +31,9 @@ void setup()
 		RTC.adjust(DateTime(__DATE__, __TIME__));
 	#endif
 	
-	logging_init();
+	#ifndef DISABLELOGGING
+		logging_init();
+	#endif
 	
 	#ifdef DEBUGM4
 		Serial.println("Start");
@@ -75,7 +78,9 @@ int main(void)
 	
 	for (;;) 
 	{
-		logging_process();
+		#ifndef DISABLELOGGING
+			logging_process();
+		#endif
 		webserver_process();
 		
 		#ifdef DEBUGTICK

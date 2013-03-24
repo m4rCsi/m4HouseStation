@@ -8,13 +8,12 @@
 #include "globe.h"
 #include "EEPROM.h"
 
+#define LIVE_PC
+
 // estimated gas_meter, 1 imp = +1
 // ex. 221043 = 2210.43  
 volatile unsigned long	gas_meter = 0;
-volatile int			gas_timedelta = 0;	// in ms
-volatile int			gas_power = 0;		// in W = 397822784/delta ca.(0.01*11*1000*60*60*1000)
-											// in m3/h = 0.01*1000*60*60/delta (36000/delta)
-								
+volatile int			gas_timedelta = 0;	// in ms								
 volatile unsigned long	last_GasInterrupt = 0;
 
 
@@ -23,17 +22,21 @@ volatile unsigned long	last_GasInterrupt = 0;
 volatile unsigned long	ele_meter = 0;
 volatile int			ele_counter = 0;
 volatile int			ele_timedelta = 0;	// in ms
-volatile int			ele_power = 0;		// in W = (1/800 * 1000 * 60 * 60 * 1000)/delta
 
 volatile unsigned char	gas_newImp = 0;
 volatile unsigned char	ele_newImp = 0;
 
+#ifdef LIVE_PC
+	volatile int			gas_power = 0;		// in W = 397822784/delta ca.(0.01*11*1000*60*60*1000)
+												// in m3/h = 0.01*1000*60*60/delta (36000/delta)
+	volatile int			ele_power = 0;		// in W = (1/800 * 1000 * 60 * 60 * 1000)/delta
+#endif
+
 // Temperature
 volatile int				temperature = 0;
-
 volatile unsigned char		humidity = 0;
-#define TEMP_INTERVAL_MIN	15
 
+#define TEMP_INTERVAL_MIN	15
 #define TEMP_TIMER			5				//in seconds
 #define BIG_INTERVAL		TEMP_INTERVAL_MIN*60/TEMP_TIMER
 
@@ -72,7 +75,10 @@ ISR (INT0_vect)
 	{
 		gas_timedelta = delta;
 		last_GasInterrupt = time;
-		gas_power = 36000000/delta;
+		
+		#ifdef LIVE_PC
+			gas_power = 36000000/delta;
+		#endif
 		
 		gas_newImp++;
 		gas_meter++;
@@ -91,10 +97,11 @@ ISR (INT1_vect)
 	{
 		ele_timedelta = delta;
 		last_interrupt = time;
-		ele_power = 4500000/delta;
+		#ifdef LIVE_PC
+			ele_power = 4500000/delta;
+		#endif
 		
 		ele_newImp++;
-		
 		ele_counter++;
 		if (ele_counter >= 80)
 		{
@@ -110,9 +117,13 @@ ISR (INT1_vect)
 void sendLoggingStats(TinyWebServer& web_server)
 {
 	web_server << F("gas_meter, ") << gas_meter << F("\n");
-	web_server << F("gas_power, ") << gas_power << F("\n");
+	#ifdef LIVE_PC
+		web_server << F("gas_power, ") << gas_power << F("\n");
+	#endif
 	web_server << F("ele_meter, ") << ele_meter << F("\n");
-	web_server << F("ele_power, ") << ele_power << F("\n");
+	#ifdef LIVE_PC
+		web_server << F("ele_power, ") << ele_power << F("\n");
+	#endif
 	web_server << F("temp, ") << (temperature/10) << F(".") << (temperature%10) << F("\n");
 	web_server << F("hum, ") << humidity << F("\n");
 }
@@ -132,10 +143,12 @@ ISR(TIMER1_OVF_vect)
 	{
 		med_intervall = true;
 	}
-	if (gas_power > 0)
-	{
-		small_intervall = true;
-	}	
+	#ifdef LIVE_PC
+		if (gas_power > 0)
+		{
+			small_intervall = true;
+		}
+	#endif
 }
 
 /************************************************************************/
@@ -479,12 +492,14 @@ void logging_process()
 		check_newDay();
 		med_intervall = false;
 	}
-	else if (small_intervall)	// 5 seconds
-	{
-		if (millis() - last_GasInterrupt > 25000) // over 25 seconds
+	#ifdef LIVE_PC
+		else if (small_intervall)	// 5 seconds
 		{
-			gas_power = 0;
+			if (millis() - last_GasInterrupt > 25000) // over 25 seconds
+			{
+				gas_power = 0;
+			}
+			small_intervall = false;
 		}
-		small_intervall = false;
-	}
+	#endif
 }

@@ -263,28 +263,20 @@ boolean webserver_init()
 			
 			ini.validate(buffer, bufferLen);
 			
-			if(ini.getIPAddress(NULL, "ip",buffer, bufferLen, ip))
+			if(!ini.getIPAddress(NULL, "ip",buffer, bufferLen, ip))
 			{
-				
+				return false;
 			}
-		}
-		
-		
-		
-		
-		//Serial << F("has filesystem \n");
-		
-		/*file.open(&root, "datalog.txt", FILE_WRITE);
-		if (file.isOpen())
-		{
-			file.seekEnd();
-			file << F("started logging");
-			file.close();
+			
+			if(ini.getMACAddress(NULL, "mac",buffer, bufferLen,mac))
+			{
+				return false;
+			}
 		}
 		else
 		{
-			Serial << F("not able to write in datalog.txt\n");
-		}	*/
+			return false;
+		}
 	}
 	else
 	{
@@ -294,10 +286,6 @@ boolean webserver_init()
 	// Initialize the Ethernet.
 	//Serial << F("Setting up the Ethernet card...\n");
 	Ethernet.begin(mac,ip);
-	/*{
-		Serial.println("DHCP failed");
-		return false;	
-	};//, ip);*/
 	
 	//Serial.println(Ethernet.localIP());
 
