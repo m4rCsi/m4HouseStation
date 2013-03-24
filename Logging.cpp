@@ -8,14 +8,13 @@
 #include "globe.h"
 #include "EEPROM.h"
 
-#define LIVE_PC
+//#define DISABLE_LIVE_PC
 
 // estimated gas_meter, 1 imp = +1
 // ex. 221043 = 2210.43  
 volatile unsigned long	gas_meter = 0;
 volatile int			gas_timedelta = 0;	// in ms								
 volatile unsigned long	last_GasInterrupt = 0;
-
 
 // estimated ele meter, every 80 imp = +1
 // ex. 52360 = 5236.0 kWh
@@ -26,7 +25,7 @@ volatile int			ele_timedelta = 0;	// in ms
 volatile unsigned char	gas_newImp = 0;
 volatile unsigned char	ele_newImp = 0;
 
-#ifdef LIVE_PC
+#ifndef DISABLE_LIVE_PC
 	volatile int			gas_power = 0;		// in W = 397822784/delta ca.(0.01*11*1000*60*60*1000)
 												// in m3/h = 0.01*1000*60*60/delta (36000/delta)
 	volatile int			ele_power = 0;		// in W = (1/800 * 1000 * 60 * 60 * 1000)/delta
@@ -76,7 +75,7 @@ ISR (INT0_vect)
 		gas_timedelta = delta;
 		last_GasInterrupt = time;
 		
-		#ifdef LIVE_PC
+		#ifndef DISABLE_LIVE_PC
 			gas_power = 36000000/delta;
 		#endif
 		
@@ -97,7 +96,7 @@ ISR (INT1_vect)
 	{
 		ele_timedelta = delta;
 		last_interrupt = time;
-		#ifdef LIVE_PC
+		#ifndef DISABLE_LIVE_PC
 			ele_power = 4500000/delta;
 		#endif
 		
@@ -117,11 +116,11 @@ ISR (INT1_vect)
 void sendLoggingStats(TinyWebServer& web_server)
 {
 	web_server << F("gas_meter, ") << gas_meter << F("\n");
-	#ifdef LIVE_PC
+	#ifndef DISABLE_LIVE_PC
 		web_server << F("gas_power, ") << gas_power << F("\n");
 	#endif
 	web_server << F("ele_meter, ") << ele_meter << F("\n");
-	#ifdef LIVE_PC
+	#ifndef DISABLE_LIVE_PC
 		web_server << F("ele_power, ") << ele_power << F("\n");
 	#endif
 	web_server << F("temp, ") << (temperature/10) << F(".") << (temperature%10) << F("\n");
@@ -143,7 +142,7 @@ ISR(TIMER1_OVF_vect)
 	{
 		med_intervall = true;
 	}
-	#ifdef LIVE_PC
+	#ifndef DISABLE_LIVE_PC
 		if (gas_power > 0)
 		{
 			small_intervall = true;
@@ -492,7 +491,7 @@ void logging_process()
 		check_newDay();
 		med_intervall = false;
 	}
-	#ifdef LIVE_PC
+	#ifndef DISABLE_LIVE_PC
 		else if (small_intervall)	// 5 seconds
 		{
 			if (millis() - last_GasInterrupt > 25000) // over 25 seconds

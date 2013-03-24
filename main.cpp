@@ -13,11 +13,11 @@
 RTC_DS1307 RTC;
 
 //#define ADJUSTTIME
-//#define DISABLELOGGING
+#define DISABLELOGGING
 
 void setup()
 {
-	boolean		webserver_state = false;
+	int		webserver_state = 0;
 	// Serial
 	#ifdef DEBUGM4
 		Serial.begin(115200);
@@ -40,10 +40,12 @@ void setup()
 	#endif
 	
 	webserver_state = webserver_init();
-	if (!webserver_state)
+	if (webserver_state != 1)
 	{
 		#ifdef DEBUGM4
-			Serial << F("Webserver Failed");
+			Serial << F("Webserver Failed ");
+			Serial << (int)webserver_state;
+			Serial << "\n";
 		#endif
 		while(1){};
 	}

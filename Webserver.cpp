@@ -10,8 +10,8 @@ const int ETHER_CS = 10;
 
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
-static uint8_t mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(192,168,0,42);
+static uint8_t mac[] = { 0, 0, 0, 0, 0, 0 };
+IPAddress ip(0,0,0,0);
 
 // SD Stuff
 boolean has_filesystem = true;
@@ -220,8 +220,47 @@ boolean post_handler(TinyWebServer& web_server) {
   return true;
 };
 
-boolean webserver_init()
+void printErrorMessage(uint8_t e, bool eol = true)
 {
+	switch (e) {
+		case IniFile::errorNoError:
+		Serial.print("no error");
+		break;
+		case IniFile::errorFileNotFound:
+		Serial.print("file not found");
+		break;
+		case IniFile::errorFileNotOpen:
+		Serial.print("file not open");
+		break;
+		case IniFile::errorBufferTooSmall:
+		Serial.print("buffer too small");
+		break;
+		case IniFile::errorSeekError:
+		Serial.print("seek error");
+		break;
+		case IniFile::errorSectionNotFound:
+		Serial.print("section not found");
+		break;
+		case IniFile::errorKeyNotFound:
+		Serial.print("key not found");
+		break;
+		case IniFile::errorEndOfFile:
+		Serial.print("end of file");
+		break;
+		case IniFile::errorUnknownError:
+		Serial.print("unknown error");
+		break;
+		default:
+		Serial.print("unknown error value");
+		break;
+	}
+	if (eol)
+	Serial.println();
+}
+
+int webserver_init()
+{
+	//Serial << "Webserver Init";
 	pinMode(SS_PIN, OUTPUT);	// set the SS pin as an output
 	// (necessary to keep the board as
 	// master and not SPI slave)
@@ -250,38 +289,51 @@ boolean webserver_init()
 	if (!root.openRoot(&volume)) {
 		has_filesystem = false;
 	}
-
-	if (has_filesystem) 
+	
+	if (!has_filesystem)
+		return -1;
+		
+	Serial << F("SD present\n");
+	//read config.txt
+	file.open(&root, "config.ini", O_READ);
+	if(file.isOpen())
 	{
-		//read config.txt
-		file.open(&root, "config.ini", O_READ);
-		if(file.isOpen())
+		const size_t bufferLen = 80;
+		char buffer[bufferLen];
+		IniFile ini(file);
+			
+		if (!ini.validate(buffer, bufferLen))
 		{
-			const size_t bufferLen = 80;
-			char buffer[bufferLen];
-			IniFile ini(file);
-			
-			ini.validate(buffer, bufferLen);
-			
-			if(!ini.getIPAddress(NULL, "ip",buffer, bufferLen, ip))
-			{
-				return false;
-			}
-			
-			if(ini.getMACAddress(NULL, "mac",buffer, bufferLen,mac))
-			{
-				return false;
-			}
+			printErrorMessage(ini.getError());
+			return -3;	
 		}
-		else
+		
+		Serial << "Ini validated";
+		uint8_t ip2[4];
+			
+		if(!ini.getIPAddress("network", "ip2",buffer, bufferLen, ip2))
 		{
-			return false;
+			return -4;
 		}
+		
+		#ifdef DEBUGM4
+			//ip.printTo(Serial);
+			Serial << ip2[0];
+			Serial.println();
+		#endif
+			
+		if(ini.getMACAddress("network", "mac",buffer, bufferLen,mac))
+		{
+			return -5;
+		}
+		Serial << mac[0];
+		Serial.println("");
 	}
 	else
 	{
-		return false;
+		return -2;
 	}
+
 	
 	// Initialize the Ethernet.
 	//Serial << F("Setting up the Ethernet card...\n");
@@ -295,7 +347,7 @@ boolean webserver_init()
 
 	//Serial << F("Server started.\n");
 	
-	return true;
+	return 1;
 }
 
 void webserver_process()

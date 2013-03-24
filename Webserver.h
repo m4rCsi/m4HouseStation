@@ -16,7 +16,7 @@
 #include	"TinyWebServer.h"
 
 
-boolean		webserver_init();
+int			webserver_init();
 void		webserver_process();
 
 #endif
