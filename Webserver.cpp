@@ -258,68 +258,36 @@ void printErrorMessage(uint8_t e, bool eol = true)
 	Serial.println();
 }
 
-int webserver_init()
+int readIni()
 {
-	//Serial << "Webserver Init";
-	pinMode(SS_PIN, OUTPUT);	// set the SS pin as an output
-	// (necessary to keep the board as
-	// master and not SPI slave)
-	digitalWrite(SS_PIN, HIGH); // and ensure SS is high
-
-	// Ensure we are in a consistent state after power-up or a reset
-	// button These pins are standard for the Arduino w5100 Rev 3
-	// ethernet board They may need to be re-jigged for different boards
-	pinMode(ETHER_CS, OUTPUT);		// Set the CS pin as an output
-	digitalWrite(ETHER_CS, HIGH);	// Turn off the W5100 chip! (wait for
-	// configuration)
-	pinMode(SD_CS, OUTPUT);			// Set the SDcard CS pin as an output
-	digitalWrite(SD_CS, HIGH);		// Turn off the SD card! (wait for
-	// configuration)
-
-	// initialize the SD card.
-	//Serial << F("Setting up SD card...\n");
-	// pass over the speed and Chip select for the SD card
-	if (!card.init(SPI_FULL_SPEED, SD_CS)) {
-		has_filesystem = false;
-	}
-	// initialize a FAT volume.
-	if (!volume.init(&card)) {
-		has_filesystem = false;
-	}
-	if (!root.openRoot(&volume)) {
-		has_filesystem = false;
-	}
-	
-	if (!has_filesystem)
-		return -1;
-		
-	Serial << F("SD present\n");
+	Serial << F("readIni:") << freeRam() << "\r\n";
 	//read config.ini
 	file.open(&root, "config.ini", O_READ);
 	if(file.isOpen())
 	{
-		const size_t bufferLen = 80;
+		const size_t bufferLen = 20;
 		char buffer[bufferLen];
+			
 		IniFile ini(file);
 			
 		if (!ini.validate(buffer, bufferLen))
 		{
 			printErrorMessage(ini.getError());
-			return -3;	
+			return -3;
 		}
-		
-		Serial << "Ini validated";
+			
+		Serial << F("Ini validated");
 		uint8_t ip2[4];
 			
 		if(!ini.getIPAddress("network", "ip2",buffer, bufferLen, ip2))
 		{
 			return -4;
 		}
-		
+			
 		#ifdef DEBUGM4
-			//ip.printTo(Serial);
-			Serial << ip2[0];
-			Serial.println();
+		//ip.printTo(Serial);
+		Serial << ip2[0];
+		Serial.println();
 		#endif
 			
 		if(ini.getMACAddress("network", "mac",buffer, bufferLen,mac))
@@ -334,19 +302,56 @@ int webserver_init()
 		return -2;
 	}
 
-	// Initialize the Ethernet.
-	//Serial << F("Setting up the Ethernet card...\n");
+}
+
+int webserver_start()
+{
+	Serial << F("webserver_start:") << freeRam() << "\r\n";
 	Ethernet.begin(mac,ip);
-	
-	//Serial.println(Ethernet.localIP());
-
-	// Start the web server.
-	//Serial << F("Web server starting...\n");
 	web.begin();
+}
 
-	//Serial << F("Server started.\n");
-	
+int sd_init()
+{
+	Serial << F("SD_init:") << freeRam() << "\r\n";
+	// initialize the SD card.
+	//Serial << F("Setting up SD card...\n");
+	// pass over the speed and Chip select for the SD card
+	if (!card.init(SPI_FULL_SPEED, SD_CS)) {
+		has_filesystem = false;
+		return -10;
+	}
+	// initialize a FAT volume.
+	if (!volume.init(&card)) {
+		has_filesystem = false;
+		return -11;
+	}
+		
+	Serial << freeRam() << "\r\n";
+	if (!root.openRoot(&volume)) {
+		has_filesystem = false;
+		return -12;
+	}
+	Serial << F("SD present\n");
 	return 1;
+}
+
+void webserver_init()
+{
+	pinMode(SS_PIN, OUTPUT);	// set the SS pin as an output
+	// (necessary to keep the board as
+	// master and not SPI slave)
+	digitalWrite(SS_PIN, HIGH); // and ensure SS is high
+
+	// Ensure we are in a consistent state after power-up or a reset
+	// button These pins are standard for the Arduino w5100 Rev 3
+	// ethernet board They may need to be re-jigged for different boards
+	pinMode(ETHER_CS, OUTPUT);		// Set the CS pin as an output
+	digitalWrite(ETHER_CS, HIGH);	// Turn off the W5100 chip! (wait for
+	// configuration)
+	pinMode(SD_CS, OUTPUT);			// Set the SDcard CS pin as an output
+	digitalWrite(SD_CS, HIGH);		// Turn off the SD card! (wait for
+	// configuration)
 }
 
 void webserver_process()

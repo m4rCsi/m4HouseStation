@@ -12,16 +12,31 @@
 
 RTC_DS1307 RTC;
 
+int freeRam () {
+	extern int __heap_start, *__brkval;
+	int v;
+	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
 //#define ADJUSTTIME
 #define DISABLELOGGING
 
+void end(int flag)
+{
+	#ifdef DEBUGM4
+	Serial << F("Webserver Failed ");
+	Serial << (int)flag;
+	Serial << "\r\n";
+	#endif
+while(1){};
+}
+
 void setup()
 {
-	int		webserver_state = 0;
 	// Serial
 	#ifdef DEBUGM4
 		Serial.begin(115200);
-		Serial.println("Setup");
+		Serial << F("Setup\r\n");
 	#endif
 	
 	// RTC
@@ -36,18 +51,27 @@ void setup()
 		logging_init();
 	#endif
 	
-	webserver_state = webserver_init();
-	if (webserver_state != 1)
+	//delay(1000);
+	Serial << freeRam() << "\r\n";
+	
+	webserver_init();
+	
+	int flag = sd_init();
+	if(flag <  1)
 	{
-		#ifdef DEBUGM4
-			Serial << F("Webserver Failed ");
-			Serial << (int)webserver_state;
-			Serial << "\n";
-		#endif
-		while(1){};
+		end(flag);
+	};
+	
+	//flag = readIni();
+	if (flag < 1)
+	{
+		end(flag);
 	}
+
+	webserver_start();
+	
 	#ifdef DEBUGM4
-		Serial.println("Setup finished...program starting");
+		Serial << F("Setup finished...program starting\r\n");
 	#endif
 }
 

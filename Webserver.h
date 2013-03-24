@@ -16,7 +16,10 @@
 #include	"TinyWebServer.h"
 
 
-int			webserver_init();
+void 		webserver_init();
+int			sd_init();
+int			readIni();
+int			webserver_start();
 void		webserver_process();
 
 #endif

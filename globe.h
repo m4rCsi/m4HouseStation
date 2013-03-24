@@ -21,4 +21,7 @@ extern SdVolume volume;
 extern SdFile root;
 extern SdFile file;
 
+//DEBUG
+extern int freeRam ();
+
 #endif
