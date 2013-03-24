@@ -10,7 +10,7 @@
 #include	"Logging.h"
 #include	"globe.h"
 
-RTC_DS1307 RTC;
+RTC_DS1307	RTC;
 
 //#define ADJUSTTIME
 

@@ -252,19 +252,7 @@ boolean webserver_init()
 
 	if (has_filesystem) 
 	{
-		//Serial << F("has filesystem \n");
-		
-		/*file.open(&root, "datalog.txt", FILE_WRITE);
-		if (file.isOpen())
-		{
-			file.seekEnd();
-			file << F("started logging");
-			file.close();
-		}
-		else
-		{
-			Serial << F("not able to write in datalog.txt\n");
-		}	*/
+
 	}
 	else
 	{
@@ -274,15 +262,6 @@ boolean webserver_init()
 	// Initialize the Ethernet.
 	//Serial << F("Setting up the Ethernet card...\n");
 	Ethernet.begin(mac,ip);
-	/*{
-		Serial.println("DHCP failed");
-		return false;	
-	};//, ip);*/
-	
-	//Serial.println(Ethernet.localIP());
-
-	// Start the web server.
-	//Serial << F("Web server starting...\n");
 	web.begin();
 
 	//Serial << F("Server started.\n");
