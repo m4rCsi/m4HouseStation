@@ -4,6 +4,7 @@
 // Date: May 2010
 //
 // Updated: 08-JAN-2012 for Arduno IDE 1.0 by <Hardcore@hardcoreforensics.com>
+// Updated: 23-MAR-2013 replacing strtoul with hextodec by <shin@marcsi.ch>
 //
 // TinyWebServer for Arduino.
 //
@@ -20,16 +21,15 @@
 // when the debugging is enabled and debugging lines are preceded by 'TWS:'
 
 #define DEBUG 0
-#define DECODE_DISABLE
 
 #include "Arduino.h"
 
 extern "C" {
 
-#include <ctype.h>
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
+	#include <ctype.h>
+	#include <string.h>
+	#include <stdlib.h>
+	#include <errno.h>
 }
 
 #include <Ethernet.h>
@@ -45,319 +45,319 @@ extern "C" {
 static char buffer[160];
 
 FLASH_STRING(mime_types,
-  "HTM*text/html|"
-  "TXT*text/plain|"
-  "CSS*text/css|"
-  "XML*text/xml|"
-  "JS*text/javascript|"
+"HTM*text/html|"
+"TXT*text/plain|"
+"CSS*text/css|"
+"XML*text/xml|"
+"JS*text/javascript|"
 
-  "GIF*image/gif|"
-  "JPG*image/jpeg|"
-  "PNG*image/png|"
-  "ICO*image/vnd.microsoft.icon|"
+"GIF*image/gif|"
+"JPG*image/jpeg|"
+"PNG*image/png|"
+"ICO*image/vnd.microsoft.icon|"
 
-  "MP3*audio/mpeg|"
+"MP3*audio/mpeg|"
 );
 
 void *malloc_check(size_t size) {
-  void* r = malloc(size);
-#if DEBUG
-  if (!r) {
-    Serial << F("TWS:No space for malloc: " ); Serial.println(size, DEC);
-  }
-#endif
-  return r;
+	void* r = malloc(size);
+	#if DEBUG
+	if (!r) {
+		Serial << F("TWS:No space for malloc: " ); Serial.println(size, DEC);
+	}
+	#endif
+	return r;
 }
 
 // Offset for text/html in `mime_types' above.
 static const TinyWebServer::MimeType text_html_content_type = 4;
 
 TinyWebServer::TinyWebServer(PathHandler handlers[],
-			     const char** headers)
-  : handlers_(handlers),
-    server_(EthernetServer(80)),
-    path_(NULL),
-    request_type_(UNKNOWN_REQUEST),
-    client_(EthernetClient(255)) {
-  if (headers) {
-    int size = 0;
-    for (int i = 0; headers[i]; i++) {
-      size++;
-    }
-    headers_ = (HeaderValue*)malloc_check(sizeof(HeaderValue) * (size + 1));
-    if (headers_) {
-      for (int i = 0; i < size; i++) {
-        headers_[i].header = headers[i];
-        headers_[i].value = NULL;
-      }
-      headers_[size].header = NULL;
-    }
-  }
+const char** headers)
+: handlers_(handlers),
+server_(EthernetServer(80)),
+path_(NULL),
+request_type_(UNKNOWN_REQUEST),
+client_(EthernetClient(255)) {
+	if (headers) {
+		int size = 0;
+		for (int i = 0; headers[i]; i++) {
+			size++;
+		}
+		headers_ = (HeaderValue*)malloc_check(sizeof(HeaderValue) * (size + 1));
+		if (headers_) {
+			for (int i = 0; i < size; i++) {
+				headers_[i].header = headers[i];
+				headers_[i].value = NULL;
+			}
+			headers_[size].header = NULL;
+		}
+	}
 }
 
 void TinyWebServer::begin() {
-  server_.begin();
+	server_.begin();
 }
 
 // Process headers.
 boolean TinyWebServer::process_headers() {
-  if (headers_) {
-    // First clear the header values from the previous HTTP request.
-    for (int i = 0; headers_[i].header; i++) {
-      if (headers_[i].value) {
-        free(headers_[i].value);
-        // Ensure the pointer is cleared once the memory is freed.
-        headers_[i].value = NULL;
-      }
-    }
-  }
-
-  enum State {
-    ERROR,
-    START_LINE,
-    HEADER_NAME,
-    HEADER_VALUE,
-    HEADER_VALUE_SKIP_INITIAL_SPACES,
-    HEADER_IGNORE_VALUE,
-    END_HEADERS,
-  };
-  State state = START_LINE;
-
-  char ch;
-  int pos;
-  const char* header;
-  while (1) {
-    if (should_stop_processing()) {
-      return false;
-    }
-    if (!read_next_char(client_, (uint8_t*)&ch)) {
-      continue;
-    }
-#if DEBUG
-    Serial.print(ch);
-#endif
-    switch (state) {
-    case START_LINE:
-      if (ch == '\r') {
-	break;
-      } else if (ch == '\n') {
-	state = END_HEADERS;
-      } else if (isalnum(ch) || ch == '-') {
-	pos = 0;
-	buffer[pos++] = ch;
-	state = HEADER_NAME;
-      } else {
-	state = ERROR;
-      }
-      break;
-
-    case HEADER_NAME:
-      if (pos + 1 >= sizeof(buffer)) {
-	state = ERROR;
-	break;
-      }
-      if (ch == ':') {
-	buffer[pos] = 0;
-	header = buffer;
-	if (is_requested_header(&header)) {
-	  state = HEADER_VALUE_SKIP_INITIAL_SPACES;
-	} else {
-	  state = HEADER_IGNORE_VALUE;
+	if (headers_) {
+		// First clear the header values from the previous HTTP request.
+		for (int i = 0; headers_[i].header; i++) {
+			if (headers_[i].value) {
+				free(headers_[i].value);
+				// Ensure the pointer is cleared once the memory is freed.
+				headers_[i].value = NULL;
+			}
+		}
 	}
-	pos = 0;
-      } else if (isalnum(ch) || ch == '-') {
-	buffer[pos++] = ch;
-      } else {
-	state = ERROR;
-	break;
-      }
-      break;
 
-    case HEADER_VALUE_SKIP_INITIAL_SPACES:
-      if (pos + 1 >= sizeof(buffer)) {
-	state = ERROR;
-	break;
-      }
-      if (ch != ' ') {
-	buffer[pos++] = ch;
-	state = HEADER_VALUE;
-      }
-      break;
+	enum State {
+		ERROR,
+		START_LINE,
+		HEADER_NAME,
+		HEADER_VALUE,
+		HEADER_VALUE_SKIP_INITIAL_SPACES,
+		HEADER_IGNORE_VALUE,
+		END_HEADERS,
+	};
+	State state = START_LINE;
 
-    case HEADER_VALUE:
-      if (pos + 1 >= sizeof(buffer)) {
-	state = ERROR;
-	break;
-      }
-      if (ch == '\n') {
-	buffer[pos] = 0;
-	if (!assign_header_value(header, buffer)) {
-	  state = ERROR;
-	  break;
+	char ch;
+	int pos;
+	const char* header;
+	while (1) {
+		if (should_stop_processing()) {
+			return false;
+		}
+		if (!read_next_char(client_, (uint8_t*)&ch)) {
+			continue;
+		}
+		#if DEBUG
+		Serial.print(ch);
+		#endif
+		switch (state) {
+			case START_LINE:
+			if (ch == '\r') {
+				break;
+			} else if (ch == '\n') {
+				state = END_HEADERS;
+			} else if (isalnum(ch) || ch == '-') {
+				pos = 0;
+				buffer[pos++] = ch;
+				state = HEADER_NAME;
+			} else {
+				state = ERROR;
+			}
+			break;
+
+			case HEADER_NAME:
+			if (pos + 1 >= sizeof(buffer)) {
+				state = ERROR;
+				break;
+			}
+			if (ch == ':') {
+				buffer[pos] = 0;
+				header = buffer;
+				if (is_requested_header(&header)) {
+					state = HEADER_VALUE_SKIP_INITIAL_SPACES;
+				} else {
+					state = HEADER_IGNORE_VALUE;
+				}
+				pos = 0;
+			} else if (isalnum(ch) || ch == '-') {
+				buffer[pos++] = ch;
+			} else {
+				state = ERROR;
+				break;
+			}
+			break;
+
+			case HEADER_VALUE_SKIP_INITIAL_SPACES:
+			if (pos + 1 >= sizeof(buffer)) {
+				state = ERROR;
+				break;
+			}
+			if (ch != ' ') {
+				buffer[pos++] = ch;
+				state = HEADER_VALUE;
+			}
+			break;
+
+			case HEADER_VALUE:
+			if (pos + 1 >= sizeof(buffer)) {
+				state = ERROR;
+				break;
+			}
+			if (ch == '\n') {
+				buffer[pos] = 0;
+				if (!assign_header_value(header, buffer)) {
+					state = ERROR;
+					break;
+				}
+				state = START_LINE;
+			} else {
+				if (ch != '\r') {
+					buffer[pos++] = ch;
+				}
+			}
+			break;
+
+			case HEADER_IGNORE_VALUE:
+			if (ch == '\n') {
+				state = START_LINE;
+			}
+			break;
+
+			default:
+			break;
+		}
+
+		if (state == END_HEADERS) {
+			break;
+		}
+		if (state == ERROR) {
+			return false;
+		}
 	}
-	state = START_LINE;
-      } else {
-	if (ch != '\r') {
-	  buffer[pos++] = ch;
-	}
-      }
-      break;
-
-    case HEADER_IGNORE_VALUE:
-      if (ch == '\n') {
-	state = START_LINE;
-      }
-      break;
-
-    default:
-      break;
-    }
-
-    if (state == END_HEADERS) {
-      break;
-    }
-    if (state == ERROR) {
-      return false;
-    }
-  }
-  return true;
+	return true;
 }
 
 void TinyWebServer::process() {
-  client_ = server_.available();
-  if (!client_.connected() || !client_.available()) {
-    return;
-  }
+	client_ = server_.available();
+	if (!client_.connected() || !client_.available()) {
+		return;
+	}
 
-  boolean is_complete = get_line(buffer, sizeof(buffer));
-  if (!buffer[0]) {
-    return;
-  }
-#if DEBUG
-  Serial << F("TWS:New request: ");
-  Serial.println(buffer);
-#endif
-  if (!is_complete) {
-    // The requested path is too long.
-    send_error_code(414);
-    client_.stop();
-    return;
-  }
+	boolean is_complete = get_line(buffer, sizeof(buffer));
+	if (!buffer[0]) {
+		return;
+	}
+	#if DEBUG
+	Serial << F("TWS:New request: ");
+	Serial.println(buffer);
+	#endif
+	if (!is_complete) {
+		// The requested path is too long.
+		send_error_code(414);
+		client_.stop();
+		return;
+	}
 
-  char* request_type_str = get_field(buffer, 0);
-  request_type_ = UNKNOWN_REQUEST;
-  if (!strcmp("GET", request_type_str)) {
-    request_type_ = GET;
-  } else if (!strcmp("POST", request_type_str)) {
-    request_type_ = POST;
-  } else if (!strcmp("PUT", request_type_str)) {
-    request_type_ = PUT;
-  }
-  path_ = get_field(buffer, 1);
+	char* request_type_str = get_field(buffer, 0);
+	request_type_ = UNKNOWN_REQUEST;
+	if (!strcmp("GET", request_type_str)) {
+		request_type_ = GET;
+	} else if (!strcmp("POST", request_type_str)) {
+		request_type_ = POST;
+	} else if (!strcmp("PUT", request_type_str)) {
+		request_type_ = PUT;
+	}
+	path_ = get_field(buffer, 1);
 
-  // Process the headers.
-  if (!process_headers()) {
-    // Malformed header line.
-    send_error_code(417);
-    client_.stop();
-  }
-  // Header processing finished. Identify the handler to call.
+	// Process the headers.
+	if (!process_headers()) {
+		// Malformed header line.
+		send_error_code(417);
+		client_.stop();
+	}
+	// Header processing finished. Identify the handler to call.
 
-  boolean should_close = true;
-  boolean found = false;
-  for (int i = 0; handlers_[i].path; i++) {
-    int len = strlen(handlers_[i].path);
-    boolean exact_match = !strcmp(path_, handlers_[i].path);
-    boolean regex_match = false;
-    if (handlers_[i].path[len - 1] == '*') {
-      regex_match = !strncmp(path_, handlers_[i].path, len - 1);
-    }
-    if ((exact_match || regex_match)
-	&& (handlers_[i].type == ANY || handlers_[i].type == request_type_)) {
-      found = true;
-      should_close = (handlers_[i].handler)(*this);
-      break;
-    }
-  }
+	boolean should_close = true;
+	boolean found = false;
+	for (int i = 0; handlers_[i].path; i++) {
+		int len = strlen(handlers_[i].path);
+		boolean exact_match = !strcmp(path_, handlers_[i].path);
+		boolean regex_match = false;
+		if (handlers_[i].path[len - 1] == '*') {
+			regex_match = !strncmp(path_, handlers_[i].path, len - 1);
+		}
+		if ((exact_match || regex_match)
+		&& (handlers_[i].type == ANY || handlers_[i].type == request_type_)) {
+			found = true;
+			should_close = (handlers_[i].handler)(*this);
+			break;
+		}
+	}
 
-  if (!found) {
-    send_error_code(404);
-    // (*this) << F("URL not found: ");
-    // client_->print(path_);
-    // client_->println();
-  }
-  if (should_close) {
-    client_.stop();
-  }
+	if (!found) {
+		send_error_code(404);
+		// (*this) << F("URL not found: ");
+		// client_->print(path_);
+		// client_->println();
+	}
+	if (should_close) {
+		client_.stop();
+	}
 
-  free(path_);
-  free(request_type_str);
+	free(path_);
+	free(request_type_str);
 }
 
 boolean TinyWebServer::is_requested_header(const char** header) {
-  if (!headers_) {
-    return false;
-  }
-  for (int i = 0; headers_[i].header; i++) {
-    if (!strcmp(*header, headers_[i].header)) {
-      *header = headers_[i].header;
-      return true;
-    }
-  }
-  return false;
+	if (!headers_) {
+		return false;
+	}
+	for (int i = 0; headers_[i].header; i++) {
+		if (!strcmp(*header, headers_[i].header)) {
+			*header = headers_[i].header;
+			return true;
+		}
+	}
+	return false;
 }
 
 boolean TinyWebServer::assign_header_value(const char* header, char* value) {
-  if (!headers_) {
-    return false;
-  }
-  boolean found = false;
-  for (int i = 0; headers_[i].header; i++) {
-    // Use pointer equality, since `header' must be the pointer
-    // inside headers_.
-    if (header == headers_[i].header) {
-      headers_[i].value = (char*)malloc_check(strlen(value) + 1);
-      if (!headers_[i].value) {
-	return false;
-      }
-      strcpy(headers_[i].value, value);
-      found = true;
-      break;
-    }
-  }
-  return found;
+	if (!headers_) {
+		return false;
+	}
+	boolean found = false;
+	for (int i = 0; headers_[i].header; i++) {
+		// Use pointer equality, since `header' must be the pointer
+		// inside headers_.
+		if (header == headers_[i].header) {
+			headers_[i].value = (char*)malloc_check(strlen(value) + 1);
+			if (!headers_[i].value) {
+				return false;
+			}
+			strcpy(headers_[i].value, value);
+			found = true;
+			break;
+		}
+	}
+	return found;
 }
 
 FLASH_STRING(content_type_msg, "Content-Type: ");
 
 void TinyWebServer::send_error_code(Client& client, int code) {
-#if DEBUG
-  Serial << F("TWS:Returning ");
-  Serial.println(code, DEC);
-#endif
-  client << F("HTTP/1.1 ");
-  client.print(code, DEC);
-  client << F(" OK\r\n");
-  if (code != 200) {
-    end_headers(client);
-  }
+	#if DEBUG
+	Serial << F("TWS:Returning ");
+	Serial.println(code, DEC);
+	#endif
+	client << F("HTTP/1.1 ");
+	client.print(code, DEC);
+	client << F(" OK\r\n");
+	if (code != 200) {
+		end_headers(client);
+	}
 }
 
 void TinyWebServer::send_content_type(MimeType mime_type) {
-  client_ << content_type_msg;
+	client_ << content_type_msg;
 
-  char ch;
-  int i = mime_type;
-  while ((ch = mime_types[i++]) != '|') {
-    client_.print(ch);
-  }
+	char ch;
+	int i = mime_type;
+	while ((ch = mime_types[i++]) != '|') {
+		client_.print(ch);
+	}
 
-  client_.println();
+	client_.println();
 }
 
 void TinyWebServer::send_content_type(const char* content_type) {
-  client_ << content_type_msg;
-  client_.println(content_type);
+	client_ << content_type_msg;
+	client_.println(content_type);
 }
 
 const char* TinyWebServer::get_path() { return path_; }
@@ -378,7 +378,13 @@ const char* TinyWebServer::get_header_value(const char* name) {
   return NULL;
 }
 
-#ifndef DECODE_DISABLE
+int hextodec(char ch) {
+	if (isdigit(ch)) return ch - '0';
+	ch = tolower(ch);
+	if ( ch >= 'a' &&  ch <= 'e') return ch - 'a' + 10;
+	return 0;
+}
+
 char* TinyWebServer::decode_url_encoded(const char* s) {
   if (!s) {
     return NULL;
@@ -401,20 +407,8 @@ char* TinyWebServer::decode_url_encoded(const char* s) {
       s = p;
       break;
     }
-    char hex[3];
-    hex[0] = *(p + 1);
-    hex[1] = *(p + 2);
-    hex[2] = 0;
-    uint32_t r = strtoul(hex, NULL, 16);
-    if (r == 0 || errno) {
-      // No conversion could be performed, couldn't find an escape
-      // sequence. Copy it as it is in the result.
-      memcpy(r2, p, 3);
-      r2 += 3;
-    }
-    else {
-      *r2++ = r;
-    }
+    uint8_t r =  hextodec(*(p + 1)) << 4 | hextodec(*(p + 2));
+    *r2++ = r;
     p += 3;
 
     // Move the new beginning to the value of p.
@@ -430,7 +424,6 @@ char* TinyWebServer::decode_url_encoded(const char* s) {
 
   return r;
 }
-#endif
 
 char* TinyWebServer::get_file_from_path(const char* path) {
   // Obtain the last path component.
@@ -441,12 +434,7 @@ char* TinyWebServer::get_file_from_path(const char* path) {
     // Skip past the '/'.
     encoded_fname++;
   }
-  #ifndef DECODE_DISABLE
-	char* decoded = decode_url_encoded(encoded_fname);
-  #else
-	char* decoded = (char*)malloc_check(strlen(encoded_fname));
-	strncpy(decoded, encoded_fname, strlen(encoded_fname));
-  #endif
+  char* decoded = decode_url_encoded(encoded_fname);
   if (!decoded) {
     return NULL;
   }
