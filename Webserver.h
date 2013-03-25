@@ -22,4 +22,7 @@ int			readIni();
 int			webserver_start();
 void		webserver_process();
 
+extern uint8_t		webserver_mac[];
+extern IPAddress	webserver_ip;
+
 #endif

@@ -12,6 +12,7 @@ IniFile::IniFile(SdFile file,
   else
     _filename[0] = '\0';
   _mode = mode;*/
+  _file = file;
   _caseSensitive = caseSensitive;
 }
 

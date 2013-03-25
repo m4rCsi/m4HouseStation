@@ -1,24 +1,11 @@
 ﻿#include	"Webserver.h"
 #include	"Logging.h"
-#include	"IniFile.h"
-
-// pin 4 is the SPI select pin for the SDcard
-const int SD_CS = 4;
-
-// pin 10 is the SPI select pin for the Ethernet
-const int ETHER_CS = 10;
+#include	"SD_card.h"
 
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
-static uint8_t mac[] = { 0, 0, 0, 0, 0, 0 };
-IPAddress ip(0,0,0,0);
-
-// SD Stuff
-boolean has_filesystem = true;
-Sd2Card card;
-SdVolume volume;
-SdFile root;
-SdFile file;
+uint8_t		webserver_mac[] = { 0, 0, 0, 0, 0, 0 };
+IPAddress	webserver_ip(0,0,0,0);
 
 /************************************************************************/
 /*  Handlers                                                            */
@@ -220,138 +207,26 @@ boolean post_handler(TinyWebServer& web_server) {
   return true;
 };
 
-void printErrorMessage(uint8_t e, bool eol = true)
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+void printMAC()
 {
-	switch (e) {
-		case IniFile::errorNoError:
-		Serial.print("no error");
-		break;
-		case IniFile::errorFileNotFound:
-		Serial.print("file not found");
-		break;
-		case IniFile::errorFileNotOpen:
-		Serial.print("file not open");
-		break;
-		case IniFile::errorBufferTooSmall:
-		Serial.print("buffer too small");
-		break;
-		case IniFile::errorSeekError:
-		Serial.print("seek error");
-		break;
-		case IniFile::errorSectionNotFound:
-		Serial.print("section not found");
-		break;
-		case IniFile::errorKeyNotFound:
-		Serial.print("key not found");
-		break;
-		case IniFile::errorEndOfFile:
-		Serial.print("end of file");
-		break;
-		case IniFile::errorUnknownError:
-		Serial.print("unknown error");
-		break;
-		default:
-		Serial.print("unknown error value");
-		break;
+	for(int i = 0; i < 6; i++)
+	{
+		Serial << webserver_mac[i];
+		Serial << ":";
 	}
-	if (eol)
 	Serial.println();
-}
-
-int readIni()
-{
-	Serial << F("readIni:") << freeRam() << "\r\n";
-	//read config.ini
-	file.open(&root, "config.ini", O_READ);
-	if(file.isOpen())
-	{
-		const size_t bufferLen = 20;
-		char buffer[bufferLen];
-			
-		IniFile ini(file);
-			
-		if (!ini.validate(buffer, bufferLen))
-		{
-			printErrorMessage(ini.getError());
-			return -3;
-		}
-			
-		Serial << F("Ini validated");
-		uint8_t ip2[4];
-			
-		if(!ini.getIPAddress("network", "ip2",buffer, bufferLen, ip2))
-		{
-			return -4;
-		}
-			
-		#ifdef DEBUGM4
-		//ip.printTo(Serial);
-		Serial << ip2[0];
-		Serial.println();
-		#endif
-			
-		if(ini.getMACAddress("network", "mac",buffer, bufferLen,mac))
-		{
-			return -5;
-		}
-		Serial << mac[0];
-		Serial.println("");
-	}
-	else
-	{
-		return -2;
-	}
-
 }
 
 int webserver_start()
 {
-	Serial << F("webserver_start:") << freeRam() << "\r\n";
-	Ethernet.begin(mac,ip);
+	//Serial << F("webserver_start:") << freeRam() << "\r\n";
+	webserver_ip.printTo(Serial); Serial.println();
+	printMAC();
+	Ethernet.begin(webserver_mac,webserver_ip);
 	web.begin();
-}
-
-int sd_init()
-{
-	Serial << F("SD_init:") << freeRam() << "\r\n";
-	// initialize the SD card.
-	//Serial << F("Setting up SD card...\n");
-	// pass over the speed and Chip select for the SD card
-	if (!card.init(SPI_FULL_SPEED, SD_CS)) {
-		has_filesystem = false;
-		return -10;
-	}
-	// initialize a FAT volume.
-	if (!volume.init(&card)) {
-		has_filesystem = false;
-		return -11;
-	}
-		
-	Serial << freeRam() << "\r\n";
-	if (!root.openRoot(&volume)) {
-		has_filesystem = false;
-		return -12;
-	}
-	Serial << F("SD present\n");
-	return 1;
-}
-
-void webserver_init()
-{
-	pinMode(SS_PIN, OUTPUT);	// set the SS pin as an output
-	// (necessary to keep the board as
-	// master and not SPI slave)
-	digitalWrite(SS_PIN, HIGH); // and ensure SS is high
-
-	// Ensure we are in a consistent state after power-up or a reset
-	// button These pins are standard for the Arduino w5100 Rev 3
-	// ethernet board They may need to be re-jigged for different boards
-	pinMode(ETHER_CS, OUTPUT);		// Set the CS pin as an output
-	digitalWrite(ETHER_CS, HIGH);	// Turn off the W5100 chip! (wait for
-	// configuration)
-	pinMode(SD_CS, OUTPUT);			// Set the SDcard CS pin as an output
-	digitalWrite(SD_CS, HIGH);		// Turn off the SD card! (wait for
-	// configuration)
 }
 
 void webserver_process()

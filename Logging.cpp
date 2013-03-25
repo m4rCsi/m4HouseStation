@@ -9,6 +9,7 @@
 #include "EEPROM.h"
 
 //#define DISABLE_LIVE_PC
+#define DISABLE_ENV
 
 // estimated gas_meter, 1 imp = +1
 // ex. 221043 = 2210.43  
@@ -211,13 +212,13 @@ ISR(TIMER1_OVF_vect)
  /************************************************************************/
  inline void initInterrupt()
  {
-		DDRD &= ~((1 << DDD2)&(1 << DDD3)); // Input
-		PORTD |= ((1 << PORTD3)&(1 << PORTD2)); // Pull Up
-		EICRA |= ((1 << ISC00)|(1 << ISC01)|(1 << ISC10)|(1 << ISC11)); // Rising Edge
-		EIMSK |= (1 << INT0);     // Turns on INT0
-		EIMSK |= (1 << INT1);     // Turns on INT0
+	 DDRD &= ~((1 << DDD2)&(1 << DDD3)); // Input
+	 PORTD |= ((1 << PORTD3)&(1 << PORTD2)); // Pull Up
+	 EICRA |= ((1 << ISC00)|(1 << ISC01)|(1 << ISC10)|(1 << ISC11)); // Rising Edge
+	 EIMSK |= (1 << INT0);     // Turns on INT0
+	 EIMSK |= (1 << INT1);     // Turns on INT0
 
-		sei();                    // turn on interrupts
+	 sei();                    // turn on interrupts
  }
 
 /************************************************************************/
@@ -309,7 +310,6 @@ void check_newDay()
 			file.println("");
 			
 			file.close();
-			//Serial << F("datalog.txt written");
 		}
 		else
 		{
@@ -324,19 +324,6 @@ void check_newDay()
 /************************************************************************/
 void logging_write()
 {
-	//Serial.println("+");
-	/*if (ele_newImp > 0)
-	{
-		Serial.print("ele: ");
-		Serial.println(ele_newImp);
-		ele_newImp = 0;
-	}
-	if (gas_newImp > 0)
-	{
-		Serial.print("gas: ");
-		Serial.println(gas_newImp);
-		gas_newImp = 0;
-	}*/
 	if (has_filesystem)
 	{	
 		char filename[12];
@@ -368,12 +355,13 @@ void logging_write()
 				ele_newImp = 0;
 			}
 			file.close();
-			//Serial << F("datalog.txt written");
 		}		
 		else 
 		{
 			// if the file isn't open, pop up an error:
-			Serial << F("error opening M");
+			#ifdef DEBUGM4
+				Serial << F("error opening M");
+			#endif
 		}
 	}
 }
@@ -481,7 +469,9 @@ void logging_process()
 	}
 	else if (big_intervall)	// 15 minutes
 	{	
+	#ifndef DISABLE_ENV
 		logging_Environment();
+	#endif
 		backupMeters();
 	
 		big_intervall = false;
