@@ -134,10 +134,25 @@ unsigned char String::reserve(unsigned int size)
 	return 0;
 }
 
+
+// m4rCsi: changed realloc to alloc and free (better for program memory)
+// /*/*unsigned char String::changeBuffer(unsigned int maxStrLen)
+// {
+// 	char *newbuffer = (char *)realloc(buffer, maxStrLen + 1);
+// 	if (newbuffer) {
+// 		buffer = newbuffer;
+// 		capacity = maxStrLen;
+// 		return 1;
+// 	}
+// 	return 0;
+// }*/
 unsigned char String::changeBuffer(unsigned int maxStrLen)
 {
-	char *newbuffer = (char *)realloc(buffer, maxStrLen + 1);
+	char *newbuffer = (char *)malloc(maxStrLen + 1);
+
 	if (newbuffer) {
+		strncpy(newbuffer, buffer, len);
+		free(buffer);
 		buffer = newbuffer;
 		capacity = maxStrLen;
 		return 1;

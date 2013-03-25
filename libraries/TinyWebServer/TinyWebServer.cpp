@@ -20,6 +20,7 @@
 // when the debugging is enabled and debugging lines are preceded by 'TWS:'
 
 #define DEBUG 0
+#define DECODE_DISABLE
 
 #include "Arduino.h"
 
@@ -377,6 +378,7 @@ const char* TinyWebServer::get_header_value(const char* name) {
   return NULL;
 }
 
+#ifndef DECODE_DISABLE
 char* TinyWebServer::decode_url_encoded(const char* s) {
   if (!s) {
     return NULL;
@@ -428,6 +430,7 @@ char* TinyWebServer::decode_url_encoded(const char* s) {
 
   return r;
 }
+#endif
 
 char* TinyWebServer::get_file_from_path(const char* path) {
   // Obtain the last path component.
@@ -438,7 +441,12 @@ char* TinyWebServer::get_file_from_path(const char* path) {
     // Skip past the '/'.
     encoded_fname++;
   }
-  char* decoded = decode_url_encoded(encoded_fname);
+  #ifndef DECODE_DISABLE
+	char* decoded = decode_url_encoded(encoded_fname);
+  #else
+	char* decoded = (char*)malloc_check(strlen(encoded_fname));
+	strncpy(decoded, encoded_fname, strlen(encoded_fname));
+  #endif
   if (!decoded) {
     return NULL;
   }
