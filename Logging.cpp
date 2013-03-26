@@ -11,17 +11,6 @@
 
 #define DISABLE_ENV
 
-struct Meter{
-	char *		identifier;
-	uint32_t	meter;
-	uint32_t	lastPulse;	
-	uint16_t	timedelta;
-	uint16_t	counter;
-	uint8_t		increaseMeter;
-	uint16_t	min;
-	uint8_t		newImp;
-};
-
 DateTime		rtc_time = NULL;
 
 volatile Meter	ele = {"ele",0,0,0,0,1,100,0};

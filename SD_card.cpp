@@ -10,6 +10,7 @@
 #include	"IniFile.h"
 #include	"Flash.h"
 #include	"Webserver.h"
+#include	"Logging.h"
 
 // SD Stuff
 Sd2Card		card;
@@ -139,7 +140,10 @@ int readIni()
 		return -5;
 	}
 	
-	
+	ini.getValue("gas","imp2meter",buffer,bufferLen);
+	gas.increaseMeter = atoi(buffer);
+	ini.getValue("ele","imp2meter",buffer,bufferLen);
+	ele.increaseMeter = atoi(buffer);
 	
 	file.close();
 	return 1;
