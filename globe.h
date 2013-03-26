@@ -8,8 +8,6 @@
 #define		GLOBE_H
 
 #include	"RTClib.h"
-#include	"Sd2Card.h"
-#include	"SdFat.h"
 
 // pin 4 is the SPI select pin for the SDcard
 #define SD_CS 4
@@ -18,13 +16,6 @@
 
 // RTC
 extern RTC_DS1307	RTC;
-
-// SD
-extern boolean has_filesystem;
-extern Sd2Card card;
-extern SdVolume volume;
-extern SdFile root;
-extern SdFile file;
 
 //DEBUG
 #ifdef DEBUGM4

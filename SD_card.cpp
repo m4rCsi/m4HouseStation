@@ -12,7 +12,6 @@
 #include	"Webserver.h"
 
 // SD Stuff
-boolean		has_filesystem = true;
 Sd2Card		card;
 SdVolume	volume;
 SdFile		root;
@@ -93,16 +92,13 @@ int sd_init()
 	// initialize the SD card.
 	// pass over the speed and Chip select for the SD card
 	if (!card.init(SPI_FULL_SPEED, SD_CS)) {
-		has_filesystem = false;
 		return -10;
 	}
 	// initialize a FAT volume.
 	if (!volume.init(&card)) {
-		has_filesystem = false;
 		return -11;
 	}
 	if (!root.openRoot(&volume)) {
-		has_filesystem = false;
 		return -12;
 	}
 	return 1;

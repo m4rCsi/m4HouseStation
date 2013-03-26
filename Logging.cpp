@@ -7,6 +7,7 @@
 #include "Logging.h"
 #include "globe.h"
 #include "EEPROM.h"
+#include "SD_card.h"
 
 #define DISABLE_ENV
 
@@ -20,6 +21,8 @@ struct Meter{
 	uint16_t	min;
 	uint8_t		newImp;
 };
+
+DateTime		rtc_time = NULL;
 
 volatile Meter	ele = {"ele",0,0,0,0,1,100,0};
 volatile Meter	gas = {"gas",0,0,0,0,80,1000,0};
@@ -118,7 +121,7 @@ ISR (INT1_vect)
 void printMeterData(Print &to, volatile Meter* m)
 {
 	to << m->identifier << F("_meter, ") << m->meter << F("\n");
-	to << m->identifier << F("td, ") << m->timedelta << F("\n");
+	to << m->identifier << F("_td, ") << m->timedelta << F("\n");
 }
 
 /************************************************************************/
@@ -133,6 +136,8 @@ void printLoggingStats(Print& to)
 		to << F("temp, ") << (temperature/10) << F(".") << (temperature%10) << F("\n");
 		to << F("hum, ") << humidity << F("\n");
 	#endif
+	
+	to << F("time, ") << rtc_time.unixtime() << F("\n");
 }
 
 /************************************************************************/
@@ -298,20 +303,20 @@ void check_newDay()
 {
 	static byte day = 0;
 	
-	DateTime time = RTC.now();
+	rtc_time = RTC.now();
 	
-	if (time.hour() == 0 &&
-		time.minute() <= 1 &&
-		time.day() != day )
+	if (rtc_time.hour() == 0 &&
+		rtc_time.minute() <= 1 &&
+		rtc_time.day() != day )
 	{
-		day = time.day();
+		day = rtc_time.day();
 		file.open(&root, "meter.txt", (O_READ | O_WRITE | O_CREAT));
 		// if the file is available, write to it:
 		if (file.isOpen())
 		{
 			file.seekEnd();
-			writeLogLine(file, gas.identifier, "meter", gas.meter, time.unixtime());
-			writeLogLine(file, ele.identifier, "meter", ele.meter, time.unixtime());
+			writeLogLine(file, gas.identifier, "meter", gas.meter, rtc_time.unixtime());
+			writeLogLine(file, ele.identifier, "meter", ele.meter, rtc_time.unixtime());
 			file.close();
 		}
 		else
@@ -327,38 +332,36 @@ void check_newDay()
 /************************************************************************/
 void logging_write()
 {
-	if (has_filesystem)
-	{	
-		char filename[12];
-		DateTime time = RTC.now();
+	char filename[12];
+	rtc_time = RTC.now();
 		
-		getFileName(filename,'M',time);
+	getFileName(filename,'M',rtc_time);
 	
-		file.open(&root, filename, (O_READ | O_WRITE | O_CREAT));
-		// if the file is available, write to it:
-		if (file.isOpen()) 
+	file.open(&root, filename, (O_READ | O_WRITE | O_CREAT));
+	// if the file is available, write to it:
+	if (file.isOpen()) 
+	{
+		file.seekEnd();
+		if (gas.newImp)
 		{
-			file.seekEnd();
-			if (gas.newImp)
-			{
-				writeLogLine(file, gas.identifier, NULL, gas.newImp, time.unixtime());
-				gas.newImp = 0;
-			}
-			if (ele.newImp)
-			{
-				writeLogLine(file, ele.identifier, NULL, ele.newImp, time.unixtime());
-				ele.newImp = 0;
-			}
-			file.close();
-		}		
-		else 
-		{
-			// if the file isn't open, pop up an error:
-			#ifdef DEBUGM4
-				Serial << F("error opening M");
-			#endif
+			writeLogLine(file, gas.identifier, NULL, gas.newImp, rtc_time.unixtime());
+			gas.newImp = 0;
 		}
+		if (ele.newImp)
+		{
+			writeLogLine(file, ele.identifier, NULL, ele.newImp, rtc_time.unixtime());
+			ele.newImp = 0;
+		}
+		file.close();
+	}		
+	else 
+	{
+		// if the file isn't open, pop up an error:
+		#ifdef DEBUGM4
+			Serial << F("error opening M");
+		#endif
 	}
+
 }
 
 /************************************************************************/
@@ -410,46 +413,42 @@ void backupMeters()
 /************************************************************************/
 void logging_Environment()
 {
-	
 	temperature = readTemp();
 	humidity = readHum();
-	
-	if (has_filesystem)
+
+	char filename[12];
+	DateTime time = RTC.now();
+		
+	getFileName(filename,'E',time);
+		
+	//Serial.println(filename);
+			
+	file.open(&root, filename, (O_READ | O_WRITE | O_CREAT));
+	// if the file is available, write to it:
+	if (file.isOpen())
 	{
-		char filename[12];
-		DateTime time = RTC.now();
-		
-		getFileName(filename,'E',time);
-		
-		//Serial.println(filename);
-			
-		file.open(&root, filename, (O_READ | O_WRITE | O_CREAT));
-		// if the file is available, write to it:
-		if (file.isOpen())
-		{
-			file.seekEnd();
+		file.seekEnd();
 					
-			file << F("Temp, ");
-			file.print(temperature/10);
-			file.print(".");
-			file.print(temperature%10);
-			file.print(", ");
-			file.println(time.unixtime());
+		file << F("Temp, ");
+		file.print(temperature/10);
+		file.print(".");
+		file.print(temperature%10);
+		file.print(", ");
+		file.println(time.unixtime());
 			
-			file << F("Hum, ");
-			file.print(humidity);
-			file.print(", ");
-			file.println(time.unixtime());
+		file << F("Hum, ");
+		file.print(humidity);
+		file.print(", ");
+		file.println(time.unixtime());
 			
-			file.close();
-		}
-		else
-		{
-			// if the file isn't open, pop up an error:
-			#ifdef DEBUGM4
-				Serial << F("error writing E");
-			#endif
-		}
+		file.close();
+	}
+	else
+	{
+		// if the file isn't open, pop up an error:
+		#ifdef DEBUGM4
+			Serial << F("error writing E");
+		#endif
 	}
 }
 

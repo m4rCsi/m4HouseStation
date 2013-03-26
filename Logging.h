@@ -16,7 +16,7 @@ void GasImpulse();
 void EleImpulse();
 void logging_init();
 void logging_process();
-void sendLoggingStats(Print& to);
+void printLoggingStats(Print& to);
 void setMeters(char meter, unsigned long value);
 
 #endif

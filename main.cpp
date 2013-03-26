@@ -9,6 +9,8 @@
 #include	"Webserver.h"
 #include	"Logging.h"
 #include	"globe.h"
+#include	"Sd2Card.h"
+#include	"SdFat.h"
 
 RTC_DS1307 RTC;
 
