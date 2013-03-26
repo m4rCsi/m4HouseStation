@@ -8,12 +8,25 @@
 #include "globe.h"
 #include "EEPROM.h"
 
-//#define DISABLE_LIVE_PC
 #define DISABLE_ENV
+
+struct Meter{
+	char *		identifier;
+	uint32_t	meter;
+	uint32_t	lastPulse;	
+	uint16_t	timedelta;
+	uint16_t	counter;
+	uint8_t		increaseMeter;
+	uint16_t	min;
+	uint8_t		newImp;
+};
+
+volatile Meter	ele = {"ele",0,0,0,0,1,100,0};
+volatile Meter	gas = {"gas",0,0,0,0,80,1000,0};
 
 // estimated gas_meter, 1 imp = +1
 // ex. 221043 = 2210.43  
-volatile unsigned long	gas_meter = 0;
+/*volatile unsigned long	gas_meter = 0;
 volatile int			gas_timedelta = 0;	// in ms								
 volatile unsigned long	last_GasInterrupt = 0;
 
@@ -30,7 +43,7 @@ volatile unsigned char	ele_newImp = 0;
 	volatile int			gas_power = 0;		// in W = 397822784/delta ca.(0.01*11*1000*60*60*1000)
 												// in m3/h = 0.01*1000*60*60/delta (36000/delta)
 	volatile int			ele_power = 0;		// in W = (1/800 * 1000 * 60 * 60 * 1000)/delta
-#endif
+#endif*/
 
 // Temperature
 volatile int				temperature = 0;
@@ -55,13 +68,35 @@ void setMeters(char meter, unsigned long value)
 {
 	if (meter == 'g')
 	{
-		gas_meter = value;
+		gas.meter = value;
 	}
 	else if (meter == 'e')
 	{
-		ele_meter = value;
+		ele.meter = value;
 	}
 	backupMeters();
+}
+
+/************************************************************************/
+/* process Impulse                                                      */
+/************************************************************************/
+void process_Impulse(volatile Meter *m)
+{
+	unsigned long time = millis();
+	unsigned long delta = time-m->lastPulse;
+	if (delta > m->min)
+	{
+		m->timedelta = delta;
+		m->lastPulse = time;
+		
+		m->counter++;
+		if (m->counter >= m->increaseMeter)
+		{
+			m->meter++;
+			m->counter = 0;	
+		}
+		m->newImp++;
+	}
 }
 
 /************************************************************************/
@@ -69,20 +104,7 @@ void setMeters(char meter, unsigned long value)
 /************************************************************************/
 ISR (INT0_vect)
 {
-	unsigned long time = millis();
-	unsigned long delta = time-last_GasInterrupt;
-	if (delta > 1000)
-	{
-		gas_timedelta = delta;
-		last_GasInterrupt = time;
-		
-		#ifndef DISABLE_LIVE_PC
-			gas_power = 36000000/delta;
-		#endif
-		
-		gas_newImp++;
-		gas_meter++;
-	}
+	process_Impulse(&gas);
 }
 
 /************************************************************************/
@@ -90,42 +112,27 @@ ISR (INT0_vect)
 /************************************************************************/
 ISR (INT1_vect)
 {
-	static unsigned long last_interrupt = 0;
-	unsigned long time = millis();
-	unsigned long delta = time-last_interrupt;
-	if (delta > 100)
-	{
-		ele_timedelta = delta;
-		last_interrupt = time;
-		#ifndef DISABLE_LIVE_PC
-			ele_power = 4500000/delta;
-		#endif
-		
-		ele_newImp++;
-		ele_counter++;
-		if (ele_counter >= 80)
-		{
-			ele_meter++;
-			ele_counter = 0;
-		}
-	}
+	process_Impulse(&ele);
+}
+
+void printMeterData(Print &to, volatile Meter* m)
+{
+	to << m->identifier << F("_meter, ") << m->meter << F("\n");
+	to << m->identifier << F("td, ") << m->timedelta << F("\n");
 }
 
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-void sendLoggingStats(TinyWebServer& web_server)
+void printLoggingStats(Print& to)
 {
-	web_server << F("gas_meter, ") << gas_meter << F("\n");
-	#ifndef DISABLE_LIVE_PC
-		web_server << F("gas_power, ") << gas_power << F("\n");
+	printMeterData(to, &gas);
+	printMeterData(to, &ele);
+	
+	#ifndef DISABLE_ENV
+		to << F("temp, ") << (temperature/10) << F(".") << (temperature%10) << F("\n");
+		to << F("hum, ") << humidity << F("\n");
 	#endif
-	web_server << F("ele_meter, ") << ele_meter << F("\n");
-	#ifndef DISABLE_LIVE_PC
-		web_server << F("ele_power, ") << ele_power << F("\n");
-	#endif
-	web_server << F("temp, ") << (temperature/10) << F(".") << (temperature%10) << F("\n");
-	web_server << F("hum, ") << humidity << F("\n");
 }
 
 /************************************************************************/
@@ -143,12 +150,10 @@ ISR(TIMER1_OVF_vect)
 	{
 		med_intervall = true;
 	}
-	#ifndef DISABLE_LIVE_PC
-		if (gas_power > 0)
-		{
-			small_intervall = true;
-		}
-	#endif
+	if (gas.timedelta > 0)
+	{
+		small_intervall = true;
+	}
 }
 
 /************************************************************************/
@@ -230,8 +235,22 @@ void logging_init()
 	initTimer();
 	
 	// read saved meters
-	gas_meter = EEPROM_readlong(0);
-	ele_meter = EEPROM_readlong(4);
+	gas.meter = EEPROM_readlong(0);
+	ele.meter = EEPROM_readlong(4);
+}
+
+void twoDigits(String str, char * buf)
+{
+	if (str.length() == 2)
+	{
+		buf[0] = str.charAt(0);
+		buf[1] = str.charAt(1);
+	}
+	else
+	{
+		buf[0] = '0';
+		buf[1] = str.charAt(0);
+	}
 }
 
 /************************************************************************/
@@ -242,39 +261,34 @@ void getFileName(char * buf, char prefix, DateTime time)
 	buf[0] = prefix;
 	
 	String year = String(time.year());
-	//Serial << year;
 	buf[1] = year.charAt(2);
 	buf[2] = year.charAt(3);
 	
 	String month = String(time.month());
-	if (month.length() == 2)
-	{
-		buf[3] = month.charAt(0);
-		buf[4] = month.charAt(1);
-	}
-	else
-	{
-		buf[3] = '0';
-		buf[4] = month.charAt(0);
-	}
+	twoDigits(month, &buf[3]);
 	
 	String day = String(time.day());
-	if (day.length() == 2)
-	{
-		buf[5] = day.charAt(0);
-		buf[6] = day.charAt(1);
-	}
-	else
-	{
-		buf[5] = '0';
-		buf[6] = day.charAt(0);
-	}
+	twoDigits(day, &buf[5]);
 	
 	buf[7] = '.';
 	buf[8] = 't';
 	buf[9] = 'x';
 	buf[10] = 't';
 	buf[11] = '\0';
+}
+
+void writeLogLine(Print &to, char * identifier, char * idsuffix, uint32_t val1, uint32_t val2 = NULL)
+{
+	to.print(identifier);
+	if (idsuffix != NULL) to.print(idsuffix);
+	to.print(", ");
+	to.print(val1);
+	if (val2 != NULL)
+	{
+		to.print(", ");
+		to.print(val2);
+	}
+	to.println();
 }
 
 /************************************************************************/
@@ -296,19 +310,8 @@ void check_newDay()
 		if (file.isOpen())
 		{
 			file.seekEnd();
-			
-			file << F("gasmeter, ");
-			file.print(gas_meter);
-			file.print(", ");
-			file.print(time.unixtime());
-			file.println("");
-			
-			file << F("elemeter, ");
-			file.print(ele_meter);
-			file.print(", ");
-			file.print(time.unixtime());
-			file.println("");
-			
+			writeLogLine(file, gas.identifier, "meter", gas.meter, time.unixtime());
+			writeLogLine(file, ele.identifier, "meter", ele.meter, time.unixtime());
 			file.close();
 		}
 		else
@@ -336,23 +339,15 @@ void logging_write()
 		if (file.isOpen()) 
 		{
 			file.seekEnd();
-			if (gas_newImp)
+			if (gas.newImp)
 			{
-				file << F("Gas, ");
-				file.print(gas_newImp);
-				file.print(", ");
-				file.print(time.unixtime());
-				file.println("");
-				gas_newImp = 0;
+				writeLogLine(file, gas.identifier, NULL, gas.newImp, time.unixtime());
+				gas.newImp = 0;
 			}
-			if (ele_newImp)
+			if (ele.newImp)
 			{
-				file << F("Ele, ");
-				file.print(ele_newImp);
-				file.print(", ");
-				file.print(time.unixtime());
-				file.println("");
-				ele_newImp = 0;
+				writeLogLine(file, ele.identifier, NULL, ele.newImp, time.unixtime());
+				ele.newImp = 0;
 			}
 			file.close();
 		}		
@@ -406,8 +401,8 @@ unsigned char readHum()
 /************************************************************************/
 void backupMeters()
 {
-	EEPROM_writelong(0,gas_meter);
-	EEPROM_writelong(4,ele_meter);
+	EEPROM_writelong(0,gas.meter);
+	EEPROM_writelong(4,ele.meter);
 }
 
 /************************************************************************/
@@ -463,7 +458,7 @@ void logging_Environment()
 /************************************************************************/
 void logging_process()
 {
-	if (gas_newImp + ele_newImp > 0)
+	if (gas.newImp + ele.newImp > 0)
 	{
 		logging_write();
 	}
@@ -484,9 +479,9 @@ void logging_process()
 	#ifndef DISABLE_LIVE_PC
 		else if (small_intervall)	// 5 seconds
 		{
-			if (millis() - last_GasInterrupt > 25000) // over 25 seconds
+			if (millis() - gas.lastPulse > 25000) // over 25 seconds
 			{
-				gas_power = 0;
+				gas.timedelta = 0;
 			}
 			small_intervall = false;
 		}

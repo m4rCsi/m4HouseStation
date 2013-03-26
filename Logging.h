@@ -7,6 +7,7 @@
 #ifndef LOGGING_H
 #define LOGGING_H
 
+#include <Printable.h>
 #include <Arduino.h>
 #include "Webserver.h"
 
@@ -15,7 +16,7 @@ void GasImpulse();
 void EleImpulse();
 void logging_init();
 void logging_process();
-void sendLoggingStats(TinyWebServer& web_server);
+void sendLoggingStats(Print& to);
 void setMeters(char meter, unsigned long value);
 
 #endif

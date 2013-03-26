@@ -110,8 +110,6 @@ int sd_init()
 
 int readIni()
 {
-	//Serial << F("readIni:") << freeRam() << "\r\n";
-	//read config.ini
 	file.open(&root, "config.ini", O_READ);
 	if(!file.isOpen())
 	{
@@ -144,6 +142,8 @@ int readIni()
 		file.close();
 		return -5;
 	}
+	
+	
 	
 	file.close();
 	return 1;

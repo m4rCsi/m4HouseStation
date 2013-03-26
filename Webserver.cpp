@@ -77,7 +77,7 @@ boolean now_handler(TinyWebServer& web_server)
     web_server.send_error_code(200);
     web_server.send_content_type("text/plain");
     web_server.end_headers();
-    sendLoggingStats(web_server);
+    printLoggingStats(web_server);
     return true;
 }
 
