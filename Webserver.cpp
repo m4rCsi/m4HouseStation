@@ -210,25 +210,35 @@ boolean post_handler(TinyWebServer& web_server) {
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-void printMAC()
-{
-	for(int i = 0; i < 6; i++)
+#ifdef DEBUGM4
+	void printMAC()
 	{
-		Serial << webserver_mac[i];
-		Serial << ":";
+		for(int i = 0; i < 6; i++)
+		{
+			Serial << webserver_mac[i];
+			Serial << ":";
+		}
+		Serial.println();
 	}
-	Serial.println();
-}
+#endif
 
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
 int webserver_start()
 {
-	//Serial << F("webserver_start:") << freeRam() << "\r\n";
-	webserver_ip.printTo(Serial); Serial.println();
-	printMAC();
+	#ifdef DEBUGM4
+		Serial << F("webserver_start:") << freeRam() << "\r\n";
+		//webserver_ip.printTo(Serial); Serial.println();
+		//printMAC();
+	#endif
 	Ethernet.begin(webserver_mac,webserver_ip);
 	web.begin();
 }
 
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
 void webserver_process()
 {
 	web.process();

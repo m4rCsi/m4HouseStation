@@ -17,6 +17,8 @@
  * along with the Arduino SdFat Library.  If not, see
  * <http://www.gnu.org/licenses/>.
  */
+// m4rCsi: Changed Serial to printto
+
 #ifndef SdFat_h
 #define SdFat_h
 /**
@@ -218,16 +220,16 @@ class SdFile : public Print {
   uint8_t isRoot(void) const {
     return type_ == FAT_FILE_TYPE_ROOT16 || type_ == FAT_FILE_TYPE_ROOT32;
   }
-  void ls(uint8_t flags = 0, uint8_t indent = 0);
+  void ls(Print &printto, uint8_t flags = 0, uint8_t indent = 0);
   uint8_t makeDir(SdFile* dir, const char* dirName);
   uint8_t open(SdFile* dirFile, uint16_t index, uint8_t oflag);
   uint8_t open(SdFile* dirFile, const char* fileName, uint8_t oflag);
 
   uint8_t openRoot(SdVolume* vol);
-  static void printDirName(const dir_t& dir, uint8_t width);
-  static void printFatDate(uint16_t fatDate);
-  static void printFatTime(uint16_t fatTime);
-  static void printTwoDigits(uint8_t v);
+  static void printDirName(Print& printto, const dir_t& dir, uint8_t width);
+  static void printFatDate(Print& printto, uint16_t fatDate);
+  static void printFatTime(Print& printto, uint16_t fatTime);
+  static void printTwoDigits(Print& printto, uint8_t v);
   /**
    * Read the next byte from a file.
    *

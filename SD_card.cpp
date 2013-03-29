@@ -107,44 +107,57 @@ int sd_init()
 
 int readIni()
 {
+	Serial << F("sd0:") << freeRam() << "\r\n";
+	char flag = 1;
 	file.open(&root, "config.ini", O_READ);
 	if(!file.isOpen())
 	{
 		return -2;
 	}
 	
+	Serial << F("sd1:") << freeRam() << "\r\n";
+	
 	const size_t bufferLen = 30;
 	char buffer[bufferLen];
 	IniFile ini(file);
 	
-	if (!ini.validate(buffer, bufferLen))
+	Serial << F("sd2:") << freeRam() << "\r\n";
+	
+	// not necessary, just uses memory
+	/*if (!ini.validate(buffer, bufferLen))
 	{
 		//printErrorMessage(ini.getError());
 		file.close();
 		return -3;
-	}
+	}*/
 	
 	//Serial << F("Ini validated\r\n");
 	
-	if(!ini.getIPAddress("network", "ip",buffer, bufferLen, webserver_ip))
+	const char *section = "network";
+	if(!ini.getIPAddress(section, "ip",buffer, bufferLen, webserver_ip))
 	{
 		//printErrorMessage(ini.getError());
-		file.close();
-		return -4;
+		flag = -4;
 	}
 	
-	if(!ini.getMACAddress("network", "mac",buffer, bufferLen,webserver_mac))
+		Serial << F("sd2.5:") << freeRam() << "\r\n";
+	
+	if(!ini.getMACAddress(section, "mac",buffer, bufferLen,webserver_mac))
 	{
 		//printErrorMessage(ini.getError());
-		file.close();
-		return -5;
+		flag = -5;
 	}
+	
+	Serial << F("sd3:") << freeRam() << "\r\n";
 	
 	ini.getValue("gas","imp2meter",buffer,bufferLen);
 	gas.increaseMeter = atoi(buffer);
 	ini.getValue("ele","imp2meter",buffer,bufferLen);
 	ele.increaseMeter = atoi(buffer);
 	
+	Serial << F("sd4:") << freeRam() << "\r\n";
+	
 	file.close();
-	return 1;
+	Serial << F("sd5:") << freeRam() << "\r\n";
+	return flag;
 }

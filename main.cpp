@@ -15,7 +15,8 @@
 RTC_DS1307 RTC;
 
 //#define ADJUSTTIME
-//#define DISABLELOGGING
+#define DISABLELOGGING
+#define ENABLE_RAMLOG
 
 /************************************************************************/
 /* Help function for                                                    */
@@ -44,8 +45,17 @@ while(1){};
 /************************************************************************/
 /* Init the pins for SD and ETH                                         */
 /************************************************************************/
-void eth_SD_init()
+void init_SD_ETH()
 {
+	//  Ethernet CS 
+	/*DDRB |= (1 << DDB2);	// Ouput
+	PORTB |= (1 << PORTB2);	// High
+	
+	// SD CS
+	DDRD |= (1<< DDD4);	// Output
+	PORTD |= (1<< PORTD4);	// High*/
+	
+	
 	pinMode(SS_PIN, OUTPUT);	// set the SS pin as an output
 	digitalWrite(SS_PIN, HIGH); // and ensure SS is high
 
@@ -53,7 +63,7 @@ void eth_SD_init()
 	digitalWrite(ETHER_CS, HIGH);	// Turn off the W5100 chip!
 
 	pinMode(SD_CS, OUTPUT);			// Set the SDcard CS pin as an output
-	digitalWrite(SD_CS, HIGH);		// Turn off the SD card!
+	digitalWrite(SD_CS, HIGH);		// Turn off the SD card!*/
 }
 
 /************************************************************************/
@@ -75,11 +85,23 @@ void setup()
 		RTC.adjust(DateTime(__DATE__, __TIME__));
 	#endif
 	
+	#ifdef DEBUGM4
+		Serial << F("start:") << freeRam() << "\r\n";
+	#endif
+	
 	#ifndef DISABLELOGGING
 		logging_init();
 	#endif
 	
-	eth_SD_init();
+	#ifdef DEBUGM4
+	Serial << F("start2:") << freeRam() << "\r\n";
+	#endif
+	
+	init_SD_ETH();
+	
+		#ifdef DEBUGM4
+		Serial << F("start3:") << freeRam() << "\r\n";
+		#endif
 	
 	int flag = sd_init();
 	if(flag <  1)
@@ -87,11 +109,19 @@ void setup()
 		end(flag);
 	};
 	
+	#ifdef DEBUGM4
+		Serial << F("start3:") << freeRam() << "\r\n";
+	#endif
+	
 	flag = readIni();
 	if (flag < 1)
 	{
 		end(flag);
 	}
+	
+	#ifdef DEBUGM4
+	Serial << F("start4:") << freeRam() << "\r\n";
+	#endif
 
 	webserver_start();
 	
